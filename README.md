@@ -10,8 +10,11 @@ SAD is an operational synthesis. Where a primitive is borrowed from a prior meth
 
 ## Where to start
 
+**New to SAD?** Read [`SAD_USER_GUIDE.md`](SAD_USER_GUIDE.md) — a complete, self-contained walkthrough that covers everything below in beginner-friendly form, plus step-by-step onboarding for new and existing projects.
+
 | Document | Purpose |
 | --- | --- |
+| [`SAD_USER_GUIDE.md`](SAD_USER_GUIDE.md) | In-depth user guide: mental models, lifecycle, onboarding for greenfield and brownfield, integrating SAD with existing toolchains and rule systems |
 | [`MANIFESTO.md`](MANIFESTO.md) | Principles and federated stakeholder authority |
 | [`LIFECYCLE.md`](LIFECYCLE.md) | The numbered loop, phase gates, reconciliation |
 | [`ROLES.md`](ROLES.md) | Human tiers and agent personas |
