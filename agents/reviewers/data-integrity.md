@@ -1,5 +1,6 @@
 ---
 name: data-integrity-reviewer
+aliases: [data-integrity-guardian-reviewer]
 description: Invariants, transactional boundaries, migrations, and schema drift risk (data-integrity-guardian pattern).
 tier: technical
 source: EveryInc/compound-engineering-plugin (pattern)

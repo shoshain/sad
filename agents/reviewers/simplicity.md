@@ -1,5 +1,6 @@
 ---
 name: simplicity-reviewer
+aliases: [code-simplicity-reviewer]
 description: Code-simplicity / minimalism vs accidental complexity (Compound code-simplicity pattern).
 tier: technical
 source: EveryInc/compound-engineering-plugin (pattern)
