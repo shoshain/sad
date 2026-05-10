@@ -1,0 +1,8 @@
+{
+  "name": "sad-spec-conformance-case-001",
+  "private": false,
+  "description": "Stub package.json for npm-based eval runner; replace with real agent-eval project.",
+  "scripts": {
+    "eval": "echo 'Implement eval runner'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "pre-spec",
+  "description": "Optional feed-forward hook: remind agent to load constitution and stakeholder tier rules before editing feature.spec.md.",
+  "sad_phase": "specify",
+  "suggested_events": ["SessionStart", "PreToolUse"],
+  "matcher_hints": ["feature.spec.md", "specs/"],
+  "action": "inject_context",
+  "context_files": [
+    ".sad/memory/constitution.md",
+    ".sad/stakeholders/non-technical.md",
+    ".sad/rules/core/README.md"
+  ],
+  "notes": "Map to your agent's hook schema (Claude Code, Cursor, etc.). This file is descriptive if native hooks are unavailable."
+}

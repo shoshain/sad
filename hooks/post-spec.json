@@ -1,0 +1,9 @@
+{
+  "name": "post-spec",
+  "description": "Optional feed-back hook: after spec write, suggest /sad-clarify if Open Questions remain unchecked.",
+  "sad_phase": "specify",
+  "suggested_events": ["PostToolUse", "Stop"],
+  "matcher_hints": ["feature.spec.md"],
+  "action": "verify_open_questions",
+  "notes": "Implement as linter or CI check: fail if '## 6. Open Questions' contains unresolved TBD without Decision needed block."
+}

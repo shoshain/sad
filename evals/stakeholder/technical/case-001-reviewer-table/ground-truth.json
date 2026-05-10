@@ -1,0 +1,5 @@
+{
+  "case_id": "stakeholder-technical-001",
+  "required_headers": ["Correctness", "Security", "architectural-conformance"],
+  "notes": "Adjust required_headers to match your fleet."
+}

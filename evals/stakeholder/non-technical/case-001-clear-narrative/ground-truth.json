@@ -1,0 +1,11 @@
+{
+  "case_id": "stakeholder-non-technical-001",
+  "description": "SME labels for narrative clarity rubric (example stub).",
+  "dimensions": ["plain_language", "scenario_coverage", "decision_alternatives"],
+  "example_scores": {
+    "plain_language": 4,
+    "scenario_coverage": 5,
+    "decision_alternatives": 3
+  },
+  "notes": "Replace with your production ground-truth and grader implementation."
+}

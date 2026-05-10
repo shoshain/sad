@@ -1,0 +1,9 @@
+{
+  "name": "post-reconcile",
+  "description": "After reconciliation.md is written, remind semi-technical reviewer gate and suggest /sad-compound.",
+  "sad_phase": "reconcile",
+  "suggested_events": ["PostToolUse", "Stop"],
+  "matcher_hints": ["reconciliation.md"],
+  "action": "nudge_stakeholder_signoff",
+  "notes": "Can be wired to notify PM channel or create checklist ticket."
+}

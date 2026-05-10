@@ -1,0 +1,16 @@
+{
+  "name": "stakeholder-tier-router",
+  "description": "Blocks task generation until all three tier approval checkboxes in walkthroughs/*.md are checked. Routes failure messages with tier-specific guidance.",
+  "event": "PreToolUse",
+  "matcher": "Bash(.*/sad-tasks.*)|Write(.*tasks\\.md)",
+  "handler": {
+    "type": "command",
+    "command": ".sad/scripts/check-tier-approvals.sh",
+    "args": ["${feature_path}"]
+  },
+  "decision": {
+    "exit_0": "allow",
+    "exit_2": "deny_with_message"
+  },
+  "notes": "Set feature_path in your harness (e.g. specs/001-my-feature). Paths are relative to repository root. Adapt matcher to your agent product."
+}

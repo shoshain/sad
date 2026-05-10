@@ -1,0 +1,5 @@
+{
+  "case_id": "stakeholder-semi-technical-001",
+  "expected": "Each modified contract listed with compatibility verdict",
+  "ground_truth": "manual_review_required"
+}

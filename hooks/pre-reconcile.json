@@ -1,0 +1,12 @@
+{
+  "name": "pre-reconcile",
+  "description": "Ensure spec-drift-detector inputs exist (spec, optional data-model, contracts) before reconcile tools run.",
+  "sad_phase": "reconcile",
+  "suggested_events": ["PreToolUse"],
+  "matcher_hints": ["reconciliation.md", "/sad-reconcile"],
+  "action": "assert_inputs_present",
+  "required_paths": [
+    "specs/${feature_path}/feature.spec.md"
+  ],
+  "notes": "Substitute feature_path. Optional paths: data-model.md, contracts/"
+}
