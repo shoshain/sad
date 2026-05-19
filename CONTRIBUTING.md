@@ -17,8 +17,16 @@ Thank you for helping improve Stakeholder-Anchored Development.
 
 1. Fork the repository.
 2. Create a branch for your change.
-3. Update relevant docs and, if applicable, [`GLOSSARY.md`](GLOSSARY.md).
-4. Open a pull request with a clear summary of what changed and why.
+3. Enable repo git hooks (strips Cursor `Co-authored-by` trailers):
+
+   ```bash
+   git config core.hooksPath .githooks
+   ```
+
+4. If you use **Cursor**, turn off commit co-author attribution in Cursor settings
+   (so `Co-authored-by: Cursor <cursoragent@cursor.com>` is never injected).
+5. Update relevant docs and, if applicable, [`GLOSSARY.md`](GLOSSARY.md).
+6. Open a pull request with a clear summary of what changed and why.
 
 ## Code of conduct
 
