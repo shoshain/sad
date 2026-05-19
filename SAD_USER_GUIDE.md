@@ -217,7 +217,7 @@ This section is your map. Each path below is annotated with what the file is, wh
 
 This is the live methodology state for *your* project. It is what you copy into a consuming repository.
 
-```
+```text
 .sad/
 ├── memory/
 │   ├── constitution.md         <- your project's immutable rules (you fill in)
@@ -317,7 +317,7 @@ A worked feature you can read end-to-end before doing your own.
 
 Per-feature work goes here. The convention is `specs/<NNN>-<slug>/`:
 
-```
+```text
 specs/001-my-feature/
 ├── feature.spec.md
 ├── feature.plan.md
@@ -983,7 +983,7 @@ A repository with existing code, existing instruction files, existing team conve
    - *Per new feature only.* The minimal entry point. New features use SAD; legacy work is left alone.
    - *Per significant change.* SAD applies whenever the change touches a contract or crosses team boundaries.
    - *Full retro-fit.* Generate `feature.spec.md` retroactively for in-flight features.
-   
+
    *Verification:* the granularity choice is written in the constitution's identity section.
 
 9. **For retro-fit only:** pick one or two in-flight features. Run `/sad-specify` retroactively *against the existing implementation*. Then run `/sad-reconcile` immediately to seed the drift baseline — most of the discrepancies will be `spec-update` verdicts (the implementation was already there and is correct; the spec just did not exist).
@@ -1250,6 +1250,7 @@ Read this section before your first feature. Each item is a real failure mode SA
 | `/sad-review` | Run reviewer fleet in parallel. | Technical |
 | `/sad-reconcile` | Detect spec-code drift; produce `reconciliation.md`. | Semi-technical |
 | `/sad-compound` | Capture lessons. | None |
+| `/sad-requirements-progress` | Refresh REQ rollup (`requirements-compliance-progress.md`). | None |
 | `/sad-demo` | Produce demo artifacts (GIFs, screenshots). | Non-technical (indirectly) |
 | `/sad-stakeholder-report` | Distil a walkthrough into an executive-ready packet. | None |
 | `/sad-spec-drift-scan` | Scheduled drift sweep across all features. | None (advisory) |
@@ -1268,6 +1269,8 @@ Read this section before your first feature. Each item is a real failure mode SA
 | `walkthroughs/semi-technical.md` | Semi-technical | Semi-technical reviewer | `specs/<slug>/walkthroughs/` |
 | `walkthroughs/technical.md` | Technical | Technical reviewer | `specs/<slug>/walkthroughs/` |
 | `tasks.md` | Technical | (gated upstream) | `specs/<slug>/` |
+| `req-coverage.yaml` | Semi-technical | Feature owner | `specs/<slug>/` (optional) |
+| `requirements-compliance-progress.md` | All tiers | None (generated) | `specs/` |
 | `reconciliation.md` | Semi-technical | Semi-technical reviewer | `specs/<slug>/` |
 | `demo/*` | Non-technical | Non-technical reviewer (via walkthrough) | `specs/<slug>/demo/` |
 | `stories/*` | Technical | (per-task) | `specs/<slug>/stories/` |
@@ -1276,7 +1279,7 @@ Read this section before your first feature. Each item is a real failure mode SA
 
 ### 17.3 What goes in `specs/<slug>/`
 
-```
+```text
 specs/<NNN>-<slug>/
 ├── feature.spec.md          (Step 4)
 ├── feature.plan.md          (Step 7)
@@ -1284,6 +1287,7 @@ specs/<NNN>-<slug>/
 ├── data-model.md            (Step 7, optional)
 ├── contracts/               (Step 7, optional)
 ├── tasks.md                 (Step 10)
+├── req-coverage.yaml        (optional — REQ IDs for rollup tooling)
 ├── walkthroughs/
 │   ├── non-technical.md     (Step 8)
 │   ├── semi-technical.md    (Step 8)
@@ -1296,7 +1300,7 @@ specs/<NNN>-<slug>/
 
 ### 17.4 Rule-precedence cheat card
 
-```
+```text
 1. .sad/memory/constitution.md  (immutable project policy)
 2. AGENTS.md (or your primary instruction file)
 3. Tool-adapter files (per-assistant mechanical guidance)

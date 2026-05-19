@@ -1,0 +1,10 @@
+# Optional per-feature REQ traceability (copy into specs/<slug>/req-coverage.yaml).
+#
+# Consumed by scripts/sad_update_requirements_progress.py alongside
+# feature.spec.md "## Traceability".
+#
+canonical_mapping: ""
+
+requirements: []
+
+notes: ""

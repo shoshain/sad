@@ -2,7 +2,7 @@
 
 The SAD loop has named steps. Steps 1 and 2 run once at project setup. Steps 3 onward run per feature. The diagram below uses slash-style command names for discoverability; map them to your agent product.
 
-```
+```text
 PROJECT-LEVEL (run once)
   1. /sad-setup          install structure, detect agents, write AGENTS.md
   2. /sad-constitution   produce .sad/memory/constitution.md + tier definitions
@@ -29,7 +29,16 @@ BACKGROUND (scheduled)
    /sad-spec-drift-scan  scheduled drift detection across all features
    /sad-compound-refresh prune stale lessons, archive obsolete decisions
    /sad-evolve-evals     fold new failure modes into eval suites
+   /sad-requirements-progress  refresh REQ/traceability rollup markdown when configured
 ```
+
+## REQ traceability rollup (optional)
+
+Projects that maintain a canonical REQ mapping alongside `specs/<slug>/` SHOULD run
+**`/sad-requirements-progress`** after each lifecycle iteration that edits mapping rows,
+`feature.spec.md`, or `req-coverage.yaml`, so engineers see cross-feature compliance at a glance.
+
+See [commands/sad-requirements-progress.md](commands/sad-requirements-progress.md).
 
 ## Phase Gates and Artifacts
 
@@ -54,7 +63,7 @@ BACKGROUND (scheduled)
 
 The walkthrough phase produces three artifacts and demands three independent approvals. The methodology blocks until each tier has approved. This is the most expensive single gate in the loop and is the source of SAD's quality leverage.
 
-```
+```text
     walkthrough-non-technical.md   →  Non-Technical Approver
     walkthrough-semi-technical.md  →  Semi-Technical Approver
     walkthrough-technical.md       →  Technical Approver
