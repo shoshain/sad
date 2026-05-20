@@ -1,0 +1,45 @@
+---
+description: SAD methodology routing rule (persistent — loaded into every chat and agent session).
+alwaysApply: true
+---
+
+# SAD routing (persistent)
+
+This project follows the **Stakeholder-Anchored Development** methodology. This rule is loaded into every chat and agent session.
+
+## Rule precedence (do not violate)
+
+1. `.sad/memory/constitution.md` (immutable project policy)
+2. `AGENTS.md` (operational entry point)
+3. `.cursor/rules/` (this file and any siblings — tool-mechanical only)
+4. user-level rules
+5. assistant defaults
+
+If you detect a conflict, surface it. Do not silently follow a lower-layer rule that contradicts the constitution.
+
+## Always-loaded files
+
+On the first message of every session, read in this order:
+
+1. `AGENTS.md`
+2. `CHEATSHEET.md` (60 seconds of orientation)
+3. `.sad/memory/constitution.md` (full)
+4. `.sad/rules/core/README.md`
+5. `.sad/state/sad-state.md` (which feature is active, which phase)
+
+After that, load specific lifecycle files on demand.
+
+## When a /sad-* command is invoked
+
+Read the canonical prompt at `commands/sad-<command>.md`. Follow its `Your task` and `Discipline` sections exactly.
+
+## Hard rules (also in `.sad/rules/core/README.md`)
+
+- **SAD-CR-001 — Constitution first.** Every planning, implementation, and review action must respect `.sad/memory/constitution.md`. If a task conflicts with the constitution, stop and escalate.
+- **SAD-CR-002 — Spec before code.** Do not implement behavior not reflected in `feature.spec.md` / `feature.plan.md` without an explicit spec update.
+- **SAD-CR-003 — Tier-appropriate artifacts.** No code in non-technical walkthroughs; no line-level code in semi-technical walkthroughs.
+- **SAD-CR-004 — Evidence, not vibes.** Claims in walkthroughs and impact forecasts must cite artifacts.
+
+## Approval is human-only
+
+Even at Level 0 (Solo SAD), AI never ticks an approval checkbox. The optional `agents/reviewers/tier-stand-in-{tier}.md` personas provide adversarial review *before* approval, never *as* approval.

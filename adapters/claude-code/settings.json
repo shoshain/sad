@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(.sad/scripts/*)",
+      "PowerShell(.sad/scripts/*)",
+      "Read(./.sad/**)",
+      "Read(./specs/**)",
+      "Read(./commands/**)",
+      "Read(./agents/**)",
+      "Read(./hooks/**)",
+      "Read(./LIFECYCLE.md)",
+      "Read(./MANIFESTO.md)",
+      "Read(./MATURITY.md)",
+      "Read(./ROLES.md)",
+      "Read(./NOVEL.md)",
+      "Read(./CHEATSHEET.md)",
+      "Read(./QUICKSTART.md)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "filePatterns": ["**/feature.spec.md"],
+        "command": "echo 'SAD: pre-spec hook — load constitution + non-technical stakeholder context before editing feature.spec.md. See hooks/pre-spec.json.'"
+      },
+      {
+        "matcher": "Write|Edit",
+        "filePatterns": ["**/tasks.md"],
+        "command": ".sad/scripts/check-tier-approvals.sh \"$(dirname \"$CLAUDE_TOOL_INPUT_file_path\")/..\" || exit 2"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "filePatterns": ["**/reconciliation.md"],
+        "command": "echo 'SAD: post-reconcile hook — nudge semi-technical reviewer for sign-off and consider running /sad-compound. See hooks/post-reconcile.json.'"
+      }
+    ]
+  }
+}

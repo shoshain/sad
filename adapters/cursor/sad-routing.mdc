@@ -1,0 +1,33 @@
+---
+description: SAD methodology routing rule. Activates on files under specs/ or when user invokes /sad-*.
+globs:
+  - "specs/**/*.md"
+  - ".sad/**/*"
+  - "commands/sad-*.md"
+alwaysApply: false
+---
+
+# SAD routing
+
+This project follows the **Stakeholder-Anchored Development** methodology. The single source of truth for project policy is `.sad/memory/constitution.md`. The single operational entry point is `AGENTS.md` at the repo root.
+
+## Rule precedence (do not violate)
+
+1. `.sad/memory/constitution.md` (immutable project policy)
+2. `AGENTS.md` (operational entry point)
+3. `.cursor/rules/` (this file and any siblings — tool-mechanical only)
+4. user-level rules
+5. assistant defaults
+
+If you detect a conflict, surface it. Do not silently follow a lower-layer rule that contradicts the constitution.
+
+## Quick orientation
+
+- Lifecycle: `LIFECYCLE.md` (14 numbered steps; full diagram in `CHEATSHEET.md`).
+- Always-loaded short rules: `.sad/rules/core/README.md` (SAD-CR-001 .. 004).
+- Three-tier audience model: every feature produces three walkthroughs (`walkthroughs/{non-technical,semi-technical,technical}.md`); approval gate requires all three.
+- Maturity level for this project: see `.sad/memory/constitution.md` Identity section.
+
+## When a /sad-* command is invoked
+
+Read the canonical prompt at `commands/sad-<command>.md`. Follow its `Your task` and `Discipline` sections exactly. Do not improvise tier-routing or approval semantics.

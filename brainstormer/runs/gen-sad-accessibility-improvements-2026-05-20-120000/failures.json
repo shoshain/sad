@@ -1,0 +1,7 @@
+{
+  "shell_unavailable": {
+    "phase": 0,
+    "detail": "Boot sequence bash/python heredocs not executed: PowerShell denied (don't ask mode) and Git Bash unavailable on this host. Run scaffolding was produced via Write tool instead. Schema validation of deep_research_prompt.json was skipped — no such file existed in CWD; the research brief was supplied inline via /genBrainstormer arguments.",
+    "impact": "Phase 0 setup completed manually but without schema validation. Full procedure (.cursor/skills/genBrainstormer/SKILL.md) and references/ directory could not be located on this host; entry-point SKILL.md was the only available skill artifact."
+  }
+}

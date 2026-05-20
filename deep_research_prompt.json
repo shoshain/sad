@@ -1,0 +1,97 @@
+{
+  "$schema": ".cursor/skills/genBrainstormer/references/deep_research_prompt.schema.json",
+  "version": "0.2.0",
+  "query": "What concrete, implementable changes to the SAD (Stakeholder-Anchored Development) v0.1 methodology repository (C:/SAD) would most lower the activation energy for a first-time adopter — solo developer, small team, or maintainer of an existing repo — to start using SAD on a real project, while preserving SAD's central novelty (the three-tier audience model in NOVEL.md §1 and the Reconcile-as-numbered-phase invariant in NOVEL.md §2)? Specifically: (a) which artifacts in the current kit (1357-line user guide, 20 commands, bash-only scripts, descriptive hooks) raise the time-to-first-observable-win the most; (b) what shape of progressive disclosure (quickstart, cheatsheet, installer, worked examples beyond the single CRUD example) is consistent with published 2025-2026 evidence on developer-methodology adoption; (c) how should SAD adapt when the three human tiers collapse to one solo developer without collapsing into spec theatre; and (d) which integration-with-AI-coding-assistant patterns (Claude Code, Cursor, Aider, Codex, Windsurf) ship as turn-key adapters rather than as 'six abstract integration patterns the user must implement themselves' per SAD_USER_GUIDE.md §8.6?",
+  "context": "SAD v0.1 is an OSS methodology kit at C:/SAD: Markdown-first, MIT-licensed, ~20 reference docs, ~20 slash-command prompts, ~20 agent personas, 4 eval-suite skeletons, 5 descriptive hook JSON files, 4 bash helper scripts, 1 worked example. README routes immediately to a 1357-line user guide; no QUICKSTART, no CHEATSHEET, no installer, no cross-platform scripts, no turn-key assistant adapters, no Level-0 maturity entry for solo devs. The methodology's central novel claim (per NOVEL.md) is the three-tier stakeholder audience model — that protection should not be lost in any accessibility change.",
+  "goals": [
+    "implementable_concepts",
+    "process_improvement",
+    "open_source_potential"
+  ],
+  "audience": [
+    "developer",
+    "open_source_community"
+  ],
+  "time_horizon": "short_term",
+  "confidentiality": "public",
+  "confidentiality_redactions": {
+    "internal_terms": [],
+    "customer_names": [],
+    "generic_replacements": {}
+  },
+  "custom_instructions": "Each idea must (1) name at least one concrete file or directory in C:/SAD that it would touch, (2) state a smallest-PR next step, and (3) include a falsifiable adoption signal — an observable metric that would tell the SAD maintainers within 90 days whether the change actually moved time-to-first-observable-win. Cite at least one 2025-2026 external source per non-trivial idea where prior art exists (developer-methodology onboarding, AI-coding-assistant integration, spec-driven development adoption). Preserve the three-tier audience model and the Reconcile phase invariant; ideas that erode either are out of scope.",
+  "research_mode": "deep",
+  "knowledge_sources": {
+    "wiki": false,
+    "standards": false,
+    "prior_research": false,
+    "llm_internal": true,
+    "web": true
+  },
+  "web_policy": "web_first",
+  "constraints": {
+    "max_web_searches": 12,
+    "max_deep_dive_files": 1,
+    "focus_domains": [
+      "developer_methodology_adoption",
+      "spec_driven_development",
+      "ai_coding_assistants",
+      "claude_code",
+      "cursor",
+      "aider",
+      "github_spec_kit",
+      "amazon_kiro",
+      "tessl",
+      "compound_engineering",
+      "ears_acceptance_criteria",
+      "indie_oss_methodology_packaging",
+      "quickstart_design"
+    ],
+    "exclude_domains": [],
+    "novelty_bar": "non_obvious",
+    "min_sources_per_claim": 2
+  },
+  "budget": {
+    "max_subagents": 1,
+    "max_total_tokens": 400000,
+    "max_runtime_minutes": 20
+  },
+  "diversity": {
+    "categories": [
+      "tooling",
+      "methodology",
+      "education",
+      "process",
+      "governance"
+    ],
+    "require_category_coverage": false,
+    "max_ideas_per_category": 2
+  },
+  "adversarial_review": {
+    "enabled": true,
+    "red_team_intensity": "medium"
+  },
+  "iteration": {
+    "is_followup": false,
+    "parent_report": null,
+    "build_on_prior_reports": []
+  },
+  "reproducibility": {
+    "seed": 20260520,
+    "snapshot_manifest": false,
+    "include_config_hash": true
+  },
+  "output": {
+    "formats": [
+      "markdown",
+      "json_sidecar"
+    ],
+    "wiki_page": false,
+    "standalone_report": true,
+    "report_dir": "brainstormer/reports",
+    "json_sidecar": true,
+    "min_novel_ideas": 4,
+    "max_novel_ideas": 7,
+    "include_visual_artifacts": true
+  }
+}

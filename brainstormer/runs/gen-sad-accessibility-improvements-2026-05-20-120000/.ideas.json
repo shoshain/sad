@@ -1,0 +1,123 @@
+{
+  "run_id": "gen-sad-accessibility-improvements-2026-05-20-120000",
+  "subject": "Make SAD methodology more accessible to first-time adopters",
+  "date": "2026-05-20",
+  "mode": "genBrainstormer (generic)",
+  "preserves": [
+    "Three-tier audience model (NOVEL.md §1) — non-negotiable",
+    "Reconcile as a numbered phase (NOVEL.md §2)",
+    "Markdown-first portability promise (README status block)"
+  ],
+  "ideas": [
+    {
+      "id": "B1",
+      "title": "Ship a real /sad-setup installer (npx/pipx), not just a prompt",
+      "theme": "day-1-onboarding",
+      "complexity": "M",
+      "adoption_lift": "high",
+      "evidence": ["commands/sad-setup.md", "README.md §Using this repo in a project"],
+      "smallest_pr": "scripts/sad-init.sh + bin/sad Node wrapper"
+    },
+    {
+      "id": "B2",
+      "title": "Cross-platform helper scripts (PowerShell siblings or Node/Python rewrite)",
+      "theme": "portability",
+      "complexity": "S-M",
+      "adoption_lift": "high",
+      "evidence": [".sad/scripts/create-feature.sh", ".sad/scripts/check-tier-approvals.sh"],
+      "smallest_pr": "Hand-port the four scripts to PowerShell + CI matrix"
+    },
+    {
+      "id": "B3",
+      "title": "Add Level 0 / Solo-SAD maturity entry",
+      "theme": "solo-team-viability",
+      "complexity": "S",
+      "adoption_lift": "high",
+      "evidence": ["MATURITY.md §Level 1", "SAD_USER_GUIDE.md §7"],
+      "smallest_pr": "Level 0 row in MATURITY.md + one sentence in SAD_USER_GUIDE §7.1"
+    },
+    {
+      "id": "B4",
+      "title": "QUICKSTART.md: one page, one feature, 30 minutes",
+      "theme": "progressive-disclosure",
+      "complexity": "S",
+      "adoption_lift": "high",
+      "evidence": ["README.md §Where to start", "SAD_USER_GUIDE.md (1357 lines)"],
+      "smallest_pr": "QUICKSTART.md at repo root + README link"
+    },
+    {
+      "id": "B5",
+      "title": "Domain-specific constitution starter pack",
+      "theme": "day-1-onboarding",
+      "complexity": "M",
+      "adoption_lift": "med-high",
+      "evidence": [".sad/memory/constitution.md (empty template)", "commands/sad-constitution.md"],
+      "smallest_pr": "Ship .sad/templates/constitutions/{web-app,library}.md"
+    },
+    {
+      "id": "B6",
+      "title": "One-page visual CHEATSHEET.md",
+      "theme": "progressive-disclosure",
+      "complexity": "S",
+      "adoption_lift": "med",
+      "evidence": ["SAD_USER_GUIDE.md §17 (buried)"],
+      "smallest_pr": "Promote §17 to top-level CHEATSHEET.md + lifecycle mermaid"
+    },
+    {
+      "id": "B7",
+      "title": "/sad-doctor project-wide health-check command",
+      "theme": "reward-shape",
+      "complexity": "S-M",
+      "adoption_lift": "high",
+      "evidence": ["No project-level health command exists", ".sad/state/sad-state.md"],
+      "smallest_pr": ".sad/scripts/doctor.{js,py} + commands/sad-doctor.md"
+    },
+    {
+      "id": "B8",
+      "title": "Turn-key adapters for Claude Code, Cursor, Codex",
+      "theme": "portability",
+      "complexity": "M-L",
+      "adoption_lift": "high",
+      "evidence": ["hooks/README.md (descriptive only)", "SAD_USER_GUIDE.md §8.6"],
+      "smallest_pr": "Ship Claude Code adapter first (.claude/settings.json + commands/)"
+    },
+    {
+      "id": "B9",
+      "title": "4-5 worked examples covering common feature shapes",
+      "theme": "progressive-disclosure",
+      "complexity": "M",
+      "adoption_lift": "med",
+      "evidence": ["examples/001-hello-feature/ is the only example"],
+      "smallest_pr": "examples/002-bug-fix/ first"
+    },
+    {
+      "id": "B10",
+      "title": "AI-plays-missing-tier reviewer personas, with opt-in guardrails",
+      "theme": "solo-team-viability",
+      "complexity": "M",
+      "adoption_lift": "med",
+      "evidence": ["agents/reviewers/ has 17 technical-tier reviewers, no tier stand-ins"],
+      "smallest_pr": "Pair with B3: ship non-technical stand-in persona only"
+    },
+    {
+      "id": "B11",
+      "title": "Worked CI templates (GitHub Actions, GitLab CI)",
+      "theme": "reward-shape",
+      "complexity": "S-M",
+      "adoption_lift": "med",
+      "evidence": ["SAD_USER_GUIDE.md §14.3 (CI gate described but unwired)", "evals/*/.gitkeep only"],
+      "smallest_pr": ".github/workflows/sad-checks.yml.example running sad-doctor"
+    },
+    {
+      "id": "B12",
+      "title": "Reposition the README tagline (optional, name/framing)",
+      "theme": "framing",
+      "complexity": "S",
+      "adoption_lift": "low-med",
+      "evidence": ["README.md:3 tagline", "MANIFESTO.md headline"],
+      "smallest_pr": "Rewrite the README's first paragraph"
+    }
+  ],
+  "top_three": ["B1", "B4", "B6"],
+  "top_five": ["B1", "B4", "B6", "B3", "B7"]
+}

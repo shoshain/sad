@@ -1,0 +1,219 @@
+{
+  "report_id": "sad-accessibility-improvements-2026-05-20",
+  "run_id": "gen-sad-accessibility-improvements-2026-05-20-130000",
+  "brainstormer_version": "gen-0.1.0",
+  "config_hash": "sha256:unavailable-no-shell",
+  "confidentiality": "public",
+  "audience": ["developer", "open_source_community"],
+  "phase_5_status": "blocked (WebSearch permission denied; see failures.json)",
+  "global_confidence_floor": "low (no web corroboration)",
+  "ideas": [
+    {
+      "id": "I-001",
+      "title": "One-command installer with per-assistant adapter pack",
+      "category": "tooling",
+      "novelty": "medium",
+      "implementability": "high",
+      "effort": "M",
+      "time_to_value": "weeks",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "OSS methodology kit; no IP concerns",
+      "standards_impact": [],
+      "sources": [
+        { "layer": "llm_internal", "ref": "training-data prior on npx create-* / pnpm create / cargo new as the modal OSS Day-1 install gesture 2022-2025" },
+        { "layer": "llm_internal", "ref": "training-data prior on multi-assistant adapter packs shipped per-assistant" }
+      ],
+      "stakeholder_map": ["SAD maintainers", "per-assistant contributors", "npm/PyPI registry"],
+      "validation_plan": "Count public-GitHub clones with .sad/ directories appearing in code-search 90 days post-release. Predicted >=5x baseline.",
+      "risks": [
+        "maintenance burden disproportionate to v0.1 OSS",
+        "adapter packs drift from canonical commands/ and hooks/",
+        "telemetry opt-in too noisy for reliable signal"
+      ],
+      "adversarial_review": "Counter: 'installer for a methodology is overkill'. Holds partially; counter-counter: per-assistant adapter pack is the genuine work, not the file copy.",
+      "pre_mortem": "Adapter packs go out of sync with source SAD repo; installer writes stale .claude/settings.json files.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Ship scripts/sad-init.sh + scripts/sad-init.ps1 as MVP",
+        "Author adapters/claude-code/ pack first",
+        "Publish as @sad/init (npm) and sad-init (PyPI) once adapter shape is stable"
+      ]
+    },
+    {
+      "id": "I-002",
+      "title": "Level-0 Solo-SAD maturity entry + opt-in AI-stand-in reviewers",
+      "category": ["methodology", "governance"],
+      "novelty": "medium",
+      "implementability": "high",
+      "effort": "S",
+      "time_to_value": "weeks",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "doc + persona change",
+      "standards_impact": [],
+      "sources": [
+        { "layer": "llm_internal", "ref": "arXiv 2508.06484 (Virk & Liu) — also cited in SAD's own .sad/stakeholders/non-technical.md" },
+        { "layer": "llm_internal", "ref": "AI-as-code-reviewer 2023-2025 literature prior" }
+      ],
+      "stakeholder_map": ["SAD maintainers"],
+      "validation_plan": "Track share of public-GitHub clones with 'Maturity level (initial): Level 0' line in constitution. Predicted >=20% within 90 days.",
+      "risks": [
+        "Solo-SAD collapses into spec-theatre",
+        "calibration-line ritual ignored in practice",
+        "AI stand-in reproduces human's blind spots"
+      ],
+      "adversarial_review": "Counter: 'AI-stand-in is the spec-theatre failure mode itself'. Holds in part; counter-counter: artifact discipline (the larger Virk & Liu protection) survives; AI is adversarial reviewer not approver; calibration ritual forces periodic human re-check.",
+      "pre_mortem": "Solo adopters skip the calibration ritual; AI stand-in degenerates into approval theater.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Add Level 0 row to MATURITY.md + sentence to SAD_USER_GUIDE.md §7.1",
+        "Ship agents/reviewers/tier-stand-in-non-technical.md only as first stand-in",
+        "Add calibration line to constitution template under Identity"
+      ]
+    },
+    {
+      "id": "I-003",
+      "title": "Cross-platform helper scripts via Node/Python single runtime",
+      "category": "tooling",
+      "novelty": "low",
+      "implementability": "high",
+      "effort": "S-M",
+      "time_to_value": "weeks",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "OSS",
+      "standards_impact": [],
+      "sources": [
+        { "layer": "llm_internal", "ref": "direct read of .sad/scripts/*.sh; all bash-only" },
+        { "layer": "llm_internal", "ref": "husky / pre-commit / commitlint single-runtime precedent" }
+      ],
+      "stakeholder_map": ["SAD maintainers"],
+      "validation_plan": "CI matrix (ubuntu-latest + macos-latest + windows-latest). Predicted: 100% green on Windows post-port (today: 0%).",
+      "risks": [
+        "Path A (bilingual .sh + .ps1) doubles maintenance",
+        "Path B (single runtime) adds Node/Python dependency"
+      ],
+      "adversarial_review": "Counter: 'PowerShell sibling scripts cheaper than runtime rewrite'. Holds in part — that is Path A. Path B is strategic option.",
+      "pre_mortem": "Path B chosen but Node/Python dependency makes npx-style usage awkward and adopters revert to manual copies.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Path A first: hand-port .sh scripts to .ps1 siblings + CI matrix on Windows",
+        "Path B as follow-up: rewrite as Node functions exposed via bin/sad-* entry points"
+      ]
+    },
+    {
+      "id": "I-004",
+      "title": "QUICKSTART.md + CHEATSHEET.md pair (progressive disclosure)",
+      "category": "education",
+      "novelty": "low",
+      "implementability": "high",
+      "effort": "S",
+      "time_to_value": "days",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "OSS docs",
+      "standards_impact": [],
+      "sources": [
+        { "layer": "llm_internal", "ref": "documentation-onboarding patterns (Django, FastAPI, Vite, Astro)" }
+      ],
+      "stakeholder_map": ["SAD maintainers", "1-2 first-time adopters as alpha readers"],
+      "validation_plan": "A/B test README link (SAD_USER_GUIDE vs QUICKSTART). Measure clones-that-complete-a-feature within 90 days. Predicted >=2x completion from QUICKSTART vs guide-first.",
+      "risks": [
+        "two new docs increase 'yet another file' problem",
+        "QUICKSTART truncates so much that adopters think SAD = truncated form"
+      ],
+      "adversarial_review": "Counter: 'user guide §17 already has a cheatsheet'. Holds weakly — §17 lives at line ~1200 of 1357; it's a reward not an entry point.",
+      "pre_mortem": "QUICKSTART truncated /sad-impact-forecast; adopters never discovered the predictive forecasting NOVEL.md §3 calls out as a contribution.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Write QUICKSTART.md against examples/001-hello-feature/",
+        "Promote SAD_USER_GUIDE.md §17 to top-level CHEATSHEET.md, trim to <=80 lines, add mermaid lifecycle",
+        "Update README.md 'Where to start' to show QUICKSTART above the user guide"
+      ]
+    },
+    {
+      "id": "I-005",
+      "title": "Domain-specific constitution starter pack",
+      "category": ["methodology", "education"],
+      "novelty": "medium",
+      "implementability": "high",
+      "effort": "M",
+      "time_to_value": "weeks",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "OSS",
+      "standards_impact": ["regulated.md starter references change-control framings normatively, does not impose"],
+      "sources": [
+        { "layer": "llm_internal", "ref": "OSS starter-template patterns (.github/ISSUE_TEMPLATE, licensee, Cursor starter rules)" }
+      ],
+      "stakeholder_map": ["SAD maintainers", "1-2 domain experts per shape"],
+      "validation_plan": "Count constitution.md files in clones retaining >=3 articles from a published starter (text-match via <!-- starter:web-app v1 --> marker). Predicted >=30% within 90 days.",
+      "risks": [
+        "starters ossify thinking",
+        "maintenance burden grows with each new starter"
+      ],
+      "adversarial_review": "Counter: 'starter packs discourage thinking; make every SAD constitution look the same'. Holds weakly — each starter has a pre-named tension the adopter must resolve.",
+      "pre_mortem": "Starters too generic; adopters ignore or copy verbatim without engaging with tensions.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Ship web-app.md and library.md first (highest-volume shapes)",
+        "Add cli.md and data-pipeline.md second",
+        "Add ml-app.md and regulated.md last"
+      ]
+    },
+    {
+      "id": "I-006",
+      "title": "/sad-doctor project-wide health-check command",
+      "category": "process",
+      "novelty": "low",
+      "implementability": "high",
+      "effort": "S-M",
+      "time_to_value": "weeks",
+      "open_source_potential": "yes",
+      "proprietary_value": "n/a",
+      "disclosure": "public",
+      "disclosure_rationale": "OSS",
+      "standards_impact": [],
+      "sources": [
+        { "layer": "llm_internal", "ref": "brew doctor / flutter doctor / npm doctor pattern" }
+      ],
+      "stakeholder_map": ["SAD maintainers"],
+      "validation_plan": "Green/yellow/red histogram across opt-in telemetry pings. Predicted: median adopter starts at yellow+3reds, reaches green+1yellow within 30 days.",
+      "risks": [
+        "false-positive reds train users to ignore the command",
+        "command becomes a substitute for actually running the lifecycle"
+      ],
+      "adversarial_review": "Counter: 'doctor commands are runtime tools; SAD is artifact-driven'. Holds weakly — doctor reads artifacts and reports; does not modify or gate.",
+      "pre_mortem": "Check thresholds calibrated against maintainers' repos rather than real adopters'; too many false-positive yellows.",
+      "patent_search_hints": { "ipc_classes": [], "keywords": [] },
+      "next_steps": [
+        "Implement .sad/scripts/doctor.{js,py} with 8-10 named checks",
+        "Add commands/sad-doctor.md prompt that invokes it",
+        "Wire as non-blocking SessionStart hook in Claude Code adapter pack (I-001)"
+      ]
+    }
+  ],
+  "gaps": [
+    { "id": "G-001", "description": "Cross-platform-script expectation for OSS dev tools 2025-2026: bilingual vs single-runtime", "type": "extrinsic" },
+    { "id": "G-002", "description": "Published 2025-2026 adoption rates of npx create-* / pipx run vs copy-files instructions", "type": "extrinsic" },
+    { "id": "G-003", "description": "AGENTS.md standard status in mid-2026 and which assistants consume it natively", "type": "extrinsic" },
+    { "id": "G-004", "description": "Solo-developer adaptation evidence in Spec Kit / Kiro / Aider / Tessl 2025-2026", "type": "extrinsic" },
+    { "id": "G-005", "description": "Published evidence on AI-stand-in reviewer effectiveness vs human-only review for non-technical-tier issues", "type": "extrinsic" },
+    { "id": "G-006", "description": "90-day OSS-methodology adoption-signal patterns", "type": "extrinsic" },
+    { "id": "G-007", "description": "Right Level-0 / Solo-SAD design that preserves Virk & Liu protection", "type": "intrinsic" },
+    { "id": "G-008", "description": "Claude Code hooks PreToolUse/PostToolUse spec in mid-2026", "type": "extrinsic" }
+  ],
+  "next_research_questions": [
+    "Re-run Phase 5 with WebSearch allowed; corroborate or invalidate the 18 LLM-internal claims in phase4-recall.md.",
+    "Has AGENTS.md been formalized in mid-2026 and which assistants consume it natively?",
+    "What is the published 2025-2026 evidence on AI-stand-in reviewer effectiveness for non-technical-tier issues?",
+    "What 90-day adoption-signal patterns are established in OSS methodology projects?"
+  ],
+  "supersedes": "brainstormer/reports/gen-sad-accessibility-improvements-2026-05-20-120000.md"
+}

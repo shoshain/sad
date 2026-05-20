@@ -1,0 +1,33 @@
+{
+  "config_hash_unavailable": {
+    "phase": 0,
+    "severity": "low",
+    "detail": "SHA-256 of resolved deep_research_prompt.json could not be computed: PowerShell denied and Git Bash unavailable on this host. Recorded as 'sha256:unavailable-no-shell' in report frontmatter. The resolved config is persisted verbatim at config.resolved.json so reproducibility is preserved by content, not by hash."
+  },
+  "askquestion_unavailable": {
+    "phase": 1,
+    "severity": "low",
+    "detail": "AskUserQuestion permission denied (Claude Code don't-ask mode). Phase 1 clarifying questions (sub-question confirmation, web-budget confirmation, idea-count confirmation) skipped; defaults applied as recorded in config.resolved.json. User can refute in a follow-up run."
+  },
+  "websearch_unavailable": {
+    "phase": 5,
+    "severity": "high",
+    "detail": "WebSearch permission denied (Claude Code don't-ask mode) on the first parallel batch of 4 of 12 planned queries. No retry attempted — the failure mode is global to this session, not query-specific, so re-dispatch would fail identically. Per SKILL.md Error Handling: 'All Phase 5 searches empty after retry — surface a warning; let the user choose to file a confidence:low partial report or abort.' AskUserQuestion is also unavailable so the user cannot be asked. Default chosen: file partial confidence:low report with explicit Appendix A documentation rather than abort (the SKILL explicitly forbids closing after Phase 4 without filing Phase 6 outputs).",
+    "impact": "Every claim from Phase 4 that was meant to be corroborated in Phase 5 is filed at confidence:low instead of upgraded to confidence:high. The provenance matrix Web column is empty across the board. Prior-art checks could not be performed; ideas in §9 are demoted from 'novel after explicit prior-art failure' to 'candidate idea, prior-art unverified'.",
+    "queries_planned_but_not_executed": [
+      {"id":"S1","gap":"G-001","query":"cross-platform shell scripts OSS tools Windows PowerShell Node Python single-runtime 2025"},
+      {"id":"S2","gap":"G-002","query":"npx create scaffold installer tool adoption rate developer experience 2025 2026"},
+      {"id":"S3","gap":"G-003","query":"AGENTS.md standard specification cross-assistant Cursor Aider Codex Claude 2026"},
+      {"id":"S4","gap":"G-004","query":"GitHub Spec Kit Kiro spec-driven development solo developer 2025 2026"},
+      {"id":"S5","gap":"G-004","query":"Aider conventions Cursor rules solo developer methodology 2026"},
+      {"id":"S6","gap":"G-005","query":"AI code reviewer effectiveness vs human reviewer 2025"},
+      {"id":"S7","gap":"G-006","query":"OSS methodology adoption metrics first 90 days"},
+      {"id":"S8","gap":"G-008","query":"Claude Code hooks PreToolUse PostToolUse 2026"},
+      {"id":"S9","bundle":"installer+solo","query":"spec-driven development installer scaffold solo developer 2026"},
+      {"id":"S10","bundle":"docs design","query":"developer documentation quickstart cheatsheet effectiveness research"},
+      {"id":"S11","bundle":"constitution starter","query":"constitution-as-code starter templates AI agent rules 2026"},
+      {"id":"S12","bundle":"EARS","query":"EARS acceptance criteria notation adoption 2025 spec-driven"}
+    ],
+    "remediation": "Re-run /genBrainstormer in an environment where WebSearch is allowed (Claude Code permission mode set to allow web tools, or invoke from Cursor where Task with generalPurpose subagent type is available). The deep_research_prompt.json at C:/SAD/deep_research_prompt.json can be re-used verbatim; Phase 4 recall in this run's phase4-recall.md can be the starting point so Phase 5 only needs to execute the 12 queued queries."
+  }
+}

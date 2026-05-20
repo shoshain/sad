@@ -4,6 +4,17 @@
 
 Not every team needs Level 5. Pick a level that matches your trust, tooling, and risk tolerance, then graduate over time.
 
+### Level 0: Solo SAD
+
+- **One human approves all three walkthroughs.** The artifact discipline (three differentiated walkthroughs, each in its tier's register) is preserved — the multi-human rubber-stamp protection is the only thing traded.
+- AI coding assistant drafts every artifact; the lone human reviews and approves.
+- **Opt-in AI tier stand-in:** the lone human may invoke an `agents/reviewers/tier-stand-in-{tier}.md` persona that runs an adversarial pass over a tier's walkthrough *before* the human approves. The stand-in does **not** approve — only the human ticks the box.
+- When a stand-in is in use, the constitution gains a calibration line: `Tier X reviewer is AI-stand-in (last calibrated against human review on YYYY-MM-DD)`. The team commits to revisiting the calibration on a stated cadence (default: every 5 shipped features or every 90 days, whichever comes first).
+- Reviewer fleet is optional but recommended for the `correctness` and `security` reviewers only — full-fleet at Level 0 buries the lone human in reports.
+- **Use when:** solo developer; OSS maintainer with no co-maintainers reviewing each PR; weekend project; pre-PMF startup with one engineer.
+- **Trade-off you accept:** Level 0 trades the Virk & Liu *multi-reviewer protection* for the Virk & Liu *artifact-discipline protection* (which is the larger of the two — arXiv 2508.06484 §4). You must be explicit about this in your constitution under Identity. If your domain is regulated or safety-critical, **do not use Level 0**; start at Level 1.
+- **Graduation to Level 1** is automatic the moment a second named reviewer joins any tier. No formal criteria apply.
+
 ### Level 1: AI-Assisted Drafting
 - AI assists humans in drafting `feature.spec.md`, `feature.plan.md`.
 - All approval gates require manual human review at every tier.
@@ -37,7 +48,9 @@ Not every team needs Level 5. Pick a level that matches your trust, tooling, and
 
 ## Graduation Criteria
 
-A team should not skip levels. Graduation from Level N to Level N+1 requires:
+A team should not skip levels (Level 0 → 1 is the exception — see Level 0 above; it graduates automatically when a second reviewer joins any tier).
+
+Graduation from Level N to Level N+1 (for N ≥ 1) requires:
 - Sustained green eval suites for 4+ consecutive weeks
 - Reviewer-fleet false-positive rate below 10%
 - Stakeholder satisfaction surveys (per tier) above 80%

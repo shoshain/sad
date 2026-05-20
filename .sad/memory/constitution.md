@@ -1,12 +1,26 @@
 # Project Constitution
 
 > **Template.** Replace bracketed sections. Borrowed from the GitHub Spec Kit governance pattern; adapted for SAD tier-routed approvals.
+>
+> Looking for a project-shape starter? See [`.sad/templates/constitutions/`](../templates/constitutions/) — web-app, library, cli, data-pipeline, ml-app, regulated. Copy the closest match over this file, then customise.
 
 ## Identity
 
 - **Project name:** [name]
 - **Primary users:** [who]
 - **Risk class:** [low / medium / high / regulated]
+- **Maturity level (initial):** [Level 0 / 1 / 2 / 3 / 4] — see [`MATURITY.md`](../../MATURITY.md). Solo developers default to Level 0; multi-person teams default to Level 1.
+- **AI tier stand-ins active:** [none / non-technical / semi-technical / technical / all] — only allowed at Level 0. If any are active, name the persona file and the last human-vs-stand-in calibration date below.
+
+### Tier stand-in calibration log (Level 0 only)
+
+| Tier stand-in | Persona file | Last calibrated | Next calibration due |
+|---|---|---|---|
+| Non-technical | `agents/reviewers/tier-stand-in-non-technical.md` | YYYY-MM-DD | every 5 features or 90 days |
+| Semi-technical | `agents/reviewers/tier-stand-in-semi-technical.md` | YYYY-MM-DD | every 5 features or 90 days |
+| Technical | `agents/reviewers/tier-stand-in-technical.md` | YYYY-MM-DD | every 5 features or 90 days |
+
+(Delete this table entirely if at Level 1+ or if no stand-ins are active.)
 
 ## Immutable Principles
 

@@ -1,0 +1,84 @@
+{
+  "$comment": "Phase 1 resolved config. AskQuestion unavailable (don't ask mode); defaults from deep_research_prompt.json carried forward without user-side clarifications. Sub-questions are the orchestrator's decomposition; the user can refute them in a follow-up run.",
+  "version": "0.2.0",
+  "query": "What concrete, implementable changes to the SAD (Stakeholder-Anchored Development) v0.1 methodology repository (C:/SAD) would most lower the activation energy for a first-time adopter — solo developer, small team, or maintainer of an existing repo — to start using SAD on a real project, while preserving SAD's central novelty (the three-tier audience model in NOVEL.md §1 and the Reconcile-as-numbered-phase invariant in NOVEL.md §2)?",
+  "context": "SAD v0.1 OSS methodology kit at C:/SAD. ~20 docs, ~20 slash commands, ~20 personas, 4 eval-suite skeletons, 5 descriptive hook JSON files, 4 bash scripts, 1 worked example. README routes to 1357-line user guide; no QUICKSTART/CHEATSHEET/installer/cross-platform scripts/turn-key assistant adapters/Level-0 maturity entry.",
+  "decomposed_sub_questions": [
+    {
+      "id": "SQ1",
+      "text": "Which artifacts in the current SAD kit are the largest contributors to time-to-first-observable-win, and how would the SAD maintainers measure that empirically?"
+    },
+    {
+      "id": "SQ2",
+      "text": "What progressive-disclosure shape (quickstart, cheatsheet, installer, more worked examples, video) is most consistent with 2025-2026 published evidence on developer-methodology adoption?"
+    },
+    {
+      "id": "SQ3",
+      "text": "How should SAD adapt when the three human tiers collapse to one solo developer without collapsing into spec-theatre or losing the Virk & Liu (arXiv 2508.06484) protection that motivates the three-tier audience model?"
+    },
+    {
+      "id": "SQ4",
+      "text": "Which AI-coding-assistant integrations (Claude Code, Cursor, Aider, Codex, Windsurf) should ship as turn-key adapters, and what does each adapter need to contain in concrete terms (rule files, command files, hook wiring, settings)?"
+    },
+    {
+      "id": "SQ5",
+      "text": "What falsifiable adoption signal(s) should the SAD maintainers measure within 90 days post-change to know whether any specific change actually moved time-to-first-observable-win?"
+    }
+  ],
+  "clarification_answers": [
+    {
+      "question": "Sub-question coverage / web budget / idea count",
+      "answer": "AskQuestion unavailable in this environment (Claude Code don't-ask mode). Defaults applied: 5 sub-questions retained; max_web_searches=12; min_novel_ideas=4 / max_novel_ideas=7. User may refute in a follow-up run via /genIdeator handoff."
+    }
+  ],
+  "applied_defaults": {
+    "research_mode": "deep",
+    "time_horizon": "short_term",
+    "confidentiality": "public",
+    "web_policy": "web_first",
+    "constraints.max_web_searches": 12,
+    "constraints.novelty_bar": "non_obvious",
+    "constraints.min_sources_per_claim": 2,
+    "diversity.max_ideas_per_category": 2,
+    "adversarial_review.enabled": true,
+    "adversarial_review.red_team_intensity": "medium",
+    "output.min_novel_ideas": 4,
+    "output.max_novel_ideas": 7,
+    "output.include_visual_artifacts": true,
+    "reproducibility.seed": 20260520,
+    "reproducibility.include_config_hash": true,
+    "reproducibility.snapshot_manifest": false
+  },
+  "knowledge_sources": {
+    "wiki": false,
+    "standards": false,
+    "prior_research": false,
+    "llm_internal": true,
+    "web": true
+  },
+  "focus_domains": [
+    "developer_methodology_adoption",
+    "spec_driven_development",
+    "ai_coding_assistants",
+    "claude_code",
+    "cursor",
+    "aider",
+    "github_spec_kit",
+    "amazon_kiro",
+    "tessl",
+    "compound_engineering",
+    "ears_acceptance_criteria",
+    "indie_oss_methodology_packaging",
+    "quickstart_design"
+  ],
+  "budget": {
+    "max_subagents": 1,
+    "max_total_tokens": 400000,
+    "max_runtime_minutes": 20
+  },
+  "preserved_invariants": [
+    "Three-tier audience model (NOVEL.md §1)",
+    "Reconcile-as-numbered-phase (NOVEL.md §2)",
+    "Markdown-first portability (README status section)"
+  ]
+}
