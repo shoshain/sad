@@ -2,6 +2,8 @@
 
 > A composable, AI-native software engineering methodology with a three-tier domain-expert feedback loop at its core, built on the shoulders of giants.
 
+**Website:** <https://sad.codes/>
+
 SAD is an operational synthesis. Where a primitive is borrowed from a prior methodology, this repository names the source, links to it, and explains how it was adapted. Novel contributions are flagged explicitly in [`NOVEL.md`](NOVEL.md).
 
 ## Status
