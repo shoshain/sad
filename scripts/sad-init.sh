@@ -147,18 +147,25 @@ apply_adapter() {
         copy_file "${apath}/settings.json"            "${TARGET}/.claude/settings.json"
       fi
       copy_file "${apath}/skills/sad/SKILL.md"        "${TARGET}/.claude/skills/sad/SKILL.md"
-      # Generate one command pointer per commands/sad-*.md
+      # Generate one command pointer per commands/sad-*.md, preferring an
+      # adapter-side override at adapters/claude-code/commands/<name>.md when present.
+      adapter_cmd_dir="${apath}/commands"
       for cmd in "${SAD_ROOT}/commands/"sad-*.md; do
         [[ -f "${cmd}" ]] || continue
         local base="$(basename "${cmd}")"
         local dst="${TARGET}/.claude/commands/${base}"
         if [[ -e "${dst}" && "${FORCE}" -ne 1 ]]; then continue; fi
-        do_run bash -c "cat > '${dst}' <<EOF
+        if [[ -f "${adapter_cmd_dir}/${base}" ]]; then
+          # Adapter ships an explicit override — copy verbatim.
+          do_run cp "${adapter_cmd_dir}/${base}" "${dst}"
+        else
+          do_run bash -c "cat > '${dst}' <<EOF
 # ${base%.*}
 
 Claude Code slash-command pointer. The canonical prompt lives at \`commands/${base}\` in this repo. Read it and follow its 'Your task' / 'Discipline' sections exactly.
 EOF
 "
+        fi
       done
       copy_file "${SAD_ROOT}/adapters/codex/AGENTS.md" "${TARGET}/AGENTS.md"  # canonical root file
       ;;

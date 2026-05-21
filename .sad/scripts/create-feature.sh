@@ -20,6 +20,11 @@ tpl="${root}/.sad/templates"
 
 mkdir -p "${feat}/walkthroughs" "${feat}/demo" "${feat}/stories" "${feat}/evals" "${feat}/contracts"
 
+# Drop a starter contract example so the contracts/ folder is not empty on day one.
+if [[ -f "${tpl}/contracts/example.md" ]]; then
+  cp "${tpl}/contracts/example.md" "${feat}/contracts/example.md"
+fi
+
 copy_tpl() {
   local name="$1"
   local dest="$2"
@@ -36,6 +41,10 @@ copy_tpl "feature.plan.md" "${feat}/feature.plan.md"
 copy_tpl "tasks.md" "${feat}/tasks.md"
 copy_tpl "impact-forecast.md" "${feat}/impact-forecast.md"
 copy_tpl "reconciliation.md" "${feat}/reconciliation.md"
+copy_tpl "requirements.draft.md" "${feat}/requirements.draft.md"
+copy_tpl "data-model.md" "${feat}/data-model.md"
+copy_tpl "research.md" "${feat}/research.md"
+copy_tpl "analysis.md" "${feat}/analysis.md"
 copy_tpl "walkthrough-non-technical.md" "${feat}/walkthroughs/non-technical.md"
 copy_tpl "walkthrough-semi-technical.md" "${feat}/walkthroughs/semi-technical.md"
 copy_tpl "walkthrough-technical.md" "${feat}/walkthroughs/technical.md"

@@ -5,7 +5,10 @@ inputs:
   - specs/*/feature.spec.md
   - repository implementation
 outputs:
-  - report (stdout, CI log, or docs/drift-report.md)
+  - .sad/state/drift-report.md
+flags:
+  - --feature <slug>   restrict the scan to a single feature
+  - --json             emit machine-readable JSON instead of Markdown
 ---
 
 You are running **SAD Spec Drift Scan**.

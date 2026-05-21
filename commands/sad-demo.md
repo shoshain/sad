@@ -6,6 +6,8 @@ inputs:
   - implemented feature behavior
 outputs:
   - specs/<feature>/demo/*
+flags:
+  - --feature <slug>
 ---
 
 You are running **SAD Demo**.

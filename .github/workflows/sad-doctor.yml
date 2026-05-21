@@ -1,0 +1,66 @@
+name: sad-doctor
+
+# Runs /sad-doctor on every PR and posts a green/yellow/red summary as a CI
+# check. Exit 0 = no reds; exit 1 = at least one red. Yellows do not fail.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.sad/**'
+      - 'commands/**'
+      - 'agents/**'
+      - 'hooks/**'
+      - 'specs/**'
+      - 'stakeholders/**'
+      - '.github/workflows/sad-doctor.yml'
+  pull_request:
+    paths:
+      - '.sad/**'
+      - 'commands/**'
+      - 'agents/**'
+      - 'hooks/**'
+      - 'specs/**'
+      - 'stakeholders/**'
+      - '.github/workflows/sad-doctor.yml'
+  workflow_dispatch:
+
+jobs:
+  doctor:
+    name: /sad-doctor
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run /sad-doctor (text)
+        run: |
+          bash .sad/scripts/doctor.sh
+
+      - name: Run /sad-doctor (JSON for artifact)
+        if: always()
+        run: |
+          bash .sad/scripts/doctor.sh --json > sad-doctor-report.json
+          cat sad-doctor-report.json
+
+      - name: Summarize to GitHub step summary
+        if: always()
+        run: |
+          {
+            echo "### /sad-doctor"
+            echo ""
+            echo '```'
+            bash .sad/scripts/doctor.sh || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sad-doctor-report
+          path: sad-doctor-report.json
+          if-no-files-found: ignore
+          retention-days: 14

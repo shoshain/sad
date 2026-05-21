@@ -156,11 +156,18 @@ function Apply-Adapter {
             }
             Copy-One (Join-Path $apath $settingsSrc)            (Join-Path $target '.claude\settings.json')
             Copy-One (Join-Path $apath 'skills\sad\SKILL.md')   (Join-Path $target '.claude\skills\sad\SKILL.md')
+            $adapterCmdDir = Join-Path $apath 'commands'
             Get-ChildItem -Path (Join-Path $sadRoot 'commands') -Filter 'sad-*.md' -ErrorAction SilentlyContinue | ForEach-Object {
                 $dst = Join-Path $target ".claude\commands\$($_.Name)"
                 if ((Test-Path $dst) -and -not $Force) { return }
-                $content = "# $($_.BaseName)`n`nClaude Code slash-command pointer. Canonical prompt lives at ``commands/$($_.Name)`` in this repo. Read it and follow its 'Your task' / 'Discipline' sections exactly.`n"
-                if ($DryRun) { Say "DRY: write $dst" } else { Set-Content -Path $dst -Value $content -Encoding utf8 }
+                $override = Join-Path $adapterCmdDir $_.Name
+                if (Test-Path $override) {
+                    # Adapter ships an explicit pointer override for this command — copy verbatim.
+                    if ($DryRun) { Say "DRY: cp override $override -> $dst" } else { Copy-Item -Path $override -Destination $dst -Force }
+                } else {
+                    $content = "# $($_.BaseName)`n`nClaude Code slash-command pointer. Canonical prompt lives at ``commands/$($_.Name)`` in this repo. Read it and follow its 'Your task' / 'Discipline' sections exactly.`n"
+                    if ($DryRun) { Say "DRY: write $dst" } else { Set-Content -Path $dst -Value $content -Encoding utf8 }
+                }
             }
             Copy-One (Join-Path $sadRoot 'adapters\codex\AGENTS.md') (Join-Path $target 'AGENTS.md')
         }

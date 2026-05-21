@@ -44,6 +44,14 @@ flowchart TD
 | 13 | `/sad-reconcile` | `reconciliation.md` (verdicts) | semi-technical | `/sad-compound` |
 | 14 | `/sad-compound` | `.sad/memory/lessons/*.md` | — | (next feature) |
 
+## Effort split (Compound Engineering default)
+
+| Plan | Work | Review | Compound |
+|---|---|---|---|
+| **40 %** | 20 % | 20 % | 20 % |
+
+The 80/20 inversion: most teams spend ~80 % of their time on Work and ~20 % on the surrounding ceremonies. SAD inverts that — 60 % is spec, plan, review, and compound; only 20 % is implementation. Source: Compound Engineering (Every Inc.) — see [`ATTRIBUTION.md`](ATTRIBUTION.md).
+
 ## The three tiers
 
 | Tier | Reads | Approves | Examples |

@@ -4,7 +4,10 @@ phase: per-feature
 inputs:
   - feature idea / problem statement
 outputs:
-  - specs/<feature>/requirements.draft.md (optional informal artifact)
+  - specs/<feature>/requirements.draft.md
+flags:
+  - --feature <slug>   target a specific specs/<slug>/ folder
+template: .sad/templates/requirements.draft.md
 ---
 
 You are facilitating **SAD Brainstorm**.
@@ -13,8 +16,8 @@ You are facilitating **SAD Brainstorm**.
 Ask clarifying questions until the following are unambiguous: user, problem, success signal, out-of-scope hints, regulatory or privacy constraints, and rough size (S/M/L).
 
 ## Discipline
-- Do not write `feature.spec.md` yet—that is `/sad-specify`.
-- Capture assumptions explicitly for downstream impact forecast.
+- Do not write `feature.spec.md` yet — that is `/sad-specify`.
+- Capture assumptions explicitly under "Assumptions captured" so `/sad-impact-forecast` can challenge them downstream.
 
 ## Output
-Write `requirements.draft.md` inside the feature folder if it exists; otherwise propose the `specs/<slug>/` path and create it.
+Fill `requirements.draft.md` from the template at `.sad/templates/requirements.draft.md`. Sections: Problem, Smallest viable scope, Bounds, Out of scope, Open questions, Assumptions captured. Create the `specs/<slug>/` folder if it does not exist (`.sad/scripts/create-feature.{sh,ps1}` scaffolds it).

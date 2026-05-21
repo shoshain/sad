@@ -7,6 +7,8 @@ inputs:
   - implementation source files
 outputs:
   - specs/<feature>/reconciliation.md
+flags:
+  - --feature <slug>
 gate: semi-technical reviewer approves verdicts before merge
 ---
 

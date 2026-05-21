@@ -10,6 +10,13 @@ inputs:
 outputs:
   - specs/requirements-compliance-progress.md (default)
   - specs/safety-documentation-requirements/registry.snapshot.json (optional path)
+flags:
+  - --repo-root <path>     repository root (default: cwd)
+  - --mapping <path>       mapping markdown file
+  - --specs-dir <path>     specs directory (default: <repo-root>/specs)
+  - --output-md <path>     override output markdown path
+  - --registry-json <path> optional JSON snapshot path
+  - --canonical-docx <s>   display path for normative DOCX
 gate: none
 ---
 

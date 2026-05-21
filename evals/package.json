@@ -1,0 +1,14 @@
+{
+  "name": "sad-eval-harness",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Minimal Node-based eval runner walking evals/**/EVAL.ts. No third-party dependencies; relies on tsx for TS execution. Replace with vitest/jest in real projects.",
+  "scripts": {
+    "eval": "node --experimental-strip-types run.mjs",
+    "eval:json": "node --experimental-strip-types run.mjs --json"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  }
+}

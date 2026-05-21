@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sad.codes/schemas/maturity-level.json",
+  "title": "SAD maturity level state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["current_level", "level_started_on", "graduation_thresholds"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "current_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Active maturity level (0..5, matching MATURITY.md)."
+    },
+    "level_started_on": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date the team entered the current level."
+    },
+    "previous_levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["level", "started_on", "graduated_on"],
+        "properties": {
+          "level": { "type": "integer", "minimum": 0, "maximum": 5 },
+          "started_on": { "type": "string", "format": "date" },
+          "graduated_on": { "type": "string", "format": "date" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "graduation_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eval_green_weeks",
+        "reviewer_false_positive_rate_max",
+        "stakeholder_satisfaction_min",
+        "rollback_rate_max_per_feature"
+      ],
+      "properties": {
+        "eval_green_weeks": { "type": "integer", "minimum": 0 },
+        "reviewer_false_positive_rate_max": { "type": "number", "minimum": 0, "maximum": 1 },
+        "stakeholder_satisfaction_min": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rollback_rate_max_per_feature": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "note": { "type": "string" }
+  }
+}

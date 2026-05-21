@@ -29,9 +29,9 @@ Adapted from Ramarajan's ARB augmentation. SAD operationalizes it as a parallel 
 
 The walkthrough phase produces three artifacts and demands three independent approvals. Adapted from AWS AI-DLC's "10 to 26 approval gates per Bolt" pattern, but with two additions: (a) gates are routed by stakeholder tier (different approvers see different artifacts), (b) the system blocks until *all* gates are satisfied (a feature with two of three approvals does not advance).
 
-## 6. Five-Level Maturity Ladder Anchored in Approval-Routing
+## 6. Six-Level Maturity Ladder Anchored in Approval-Routing
 
-Synthesizing Lowgren's CMMM-style levels with Furuholt's trust-based decentralization, SAD's `MATURITY.md` defines each level by *who approves what*. This is operational rather than aspirational; a team can audit which level it is actually operating at by counting which gates are human-approved and which are AI-approved.
+Synthesizing Lowgren's five-level CMMM-style scaffold with Furuholt's trust-based decentralization, SAD's `MATURITY.md` defines each level by *who approves what*. SAD prefixes Lowgren's five levels with **Level 0 — Solo SAD** (one human carrying all three tiers) so that the lightweight floor is operationally defined too. This is operational rather than aspirational; a team can audit which level it is actually operating at by counting which gates are human-approved and which are AI-approved.
 
 ## 7. Federated Stakeholder Authority as the Manifesto Frame
 

@@ -7,6 +7,9 @@ inputs:
   - specs/<feature>/feature.plan.md
 outputs:
   - code, tests, updated demo artifacts as needed
+flags:
+  - --feature <slug>
+  - --wave <N>    execute only the Nth wave (default: all waves in order)
 ---
 
 You are running **SAD Implement**.

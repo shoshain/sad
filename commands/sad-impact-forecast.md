@@ -5,6 +5,8 @@ inputs:
   - specs/<feature>/feature.spec.md
 outputs:
   - specs/<feature>/impact-forecast.md
+flags:
+  - --feature <slug>
 gate: semi-technical reviewer (advisory; informational)
 ---
 

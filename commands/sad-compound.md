@@ -7,6 +7,8 @@ inputs:
 outputs:
   - .sad/memory/lessons/YYYY-MM-DD-<slug>.md (or similar convention)
   - incremental updates to AGENTS.md (if lesson is global)
+flags:
+  - --feature <slug>
 ---
 
 You are running **SAD Compound**.

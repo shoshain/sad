@@ -1,0 +1,55 @@
+name: sad-evals
+
+# Run the SAD eval harness on every PR. Stubs do not fail CI; only real failures /
+# errors block. Replace the matrix / cases here with your project-specific suites
+# as you wire them up (see evals/README.md).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'evals/**'
+      - '.sad/templates/**'
+      - 'commands/**'
+      - 'agents/**'
+      - '.github/workflows/sad-evals.yml'
+  pull_request:
+    paths:
+      - 'evals/**'
+      - '.sad/templates/**'
+      - 'commands/**'
+      - 'agents/**'
+      - '.github/workflows/sad-evals.yml'
+  workflow_dispatch:
+
+jobs:
+  run:
+    name: evals harness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run eval harness (JSON)
+        run: |
+          node --experimental-strip-types evals/run.mjs --json | tee evals/last-run.json
+
+      - name: Run eval harness (text)
+        run: |
+          node --experimental-strip-types evals/run.mjs
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sad-evals-report
+          path: evals/last-run.json
+          if-no-files-found: ignore
+          retention-days: 14

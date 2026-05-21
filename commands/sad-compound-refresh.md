@@ -4,7 +4,12 @@ phase: maintenance
 inputs:
   - .sad/memory/lessons/
 outputs:
-  - archived lessons / refreshed index notes in AGENTS.md (optional)
+  - .sad/memory/lessons/_archive/* (moved files with tombstone headers)
+  - .sad/memory/lessons/LESSONS_INDEX.md
+template: .sad/templates/LESSONS_INDEX.md
+flags:
+  - --max-age-days <N>   archive lessons older than N days (default 365)
+  - --dry-run            list what would be archived; do not move files
 ---
 
 You are running **SAD Compound Refresh**.

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/tools-list.json",
+  "name": "sad-example-server",
+  "version": "0.1.0",
+  "description": "Reference MCP server shipped with SAD's optional reference/ skeleton. One tool, deterministic, no dependencies.",
+  "tools": [
+    {
+      "name": "greet",
+      "description": "Return a deterministic greeting for a given name. Mirrors examples/001-hello-feature.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 140,
+            "description": "Plain-text name; 1 to 140 characters; no markdown, no emoji."
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "greeting": {
+            "type": "string",
+            "description": "Deterministic 'Hello, <name>.' response."
+          }
+        },
+        "required": ["greeting"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

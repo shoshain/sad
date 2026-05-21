@@ -80,7 +80,7 @@ SAD is a synthesis. Below is every primitive in the methodology with its source,
 | **Federated Stakeholder Authority** (three-pillar framing: ground rules + governance + collaboration) | Vidar Furuholt, *Three Enduring Pillars of Enterprise Architecture in the Age of AI* | LinkedIn, April 15, 2026 | Reused wholesale, scaled down from enterprise-architecture to feature-level governance |
 | Reference Architecture as real-time decision support, not after-the-fact compliance | Vidar Furuholt | (same) | Adopted; constitution loaded into every phase |
 | Trust-based decentralization ladder | Vidar Furuholt | (same) | Synthesized into Maturity Levels 1 to 5 |
-| AI Agent Capability Maturity Levels (5-level CMMM-style) | Jesper Lowgren, *Enterprise Architecture 4.0* | LinkedIn, Feb 18, 2025 | Adopted as scaffolding for `MATURITY.md`; Levels 4 and 5 marked speculative per source |
+| AI Agent Capability Maturity Levels (5-level CMMM-style) | Jesper Lowgren, *Enterprise Architecture 4.0* | LinkedIn, Feb 18, 2025 | Adopted as scaffolding for `MATURITY.md`; SAD prefixes Lowgren's five levels with a **Level 0 — Solo SAD** entry point, yielding a six-level ladder. Levels 4 and 5 remain marked speculative per source. |
 | Predictive Impact Assessment | Balaji Ramarajan, *Generative AI: Powering the Future of Enterprise Architecture* | LinkedIn, June 24, 2024 | Operationalized as `/sad-impact-forecast` and `impact-forecaster` agent |
 | Architecture Review Board augmentation | Balaji Ramarajan | (same) | Operationalized as `architectural-conformance` reviewer in the fleet |
 

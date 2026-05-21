@@ -5,6 +5,9 @@ inputs:
   - the consuming project's .sad/, specs/, hooks/, AGENTS.md
 outputs:
   - human-readable health report (default) or JSON (--json)
+flags:
+  - --json     emit structured JSON instead of text
+  - --quiet    exit code only (useful in hooks)
 exit_codes:
   - 0: no red findings
   - 1: at least one red finding

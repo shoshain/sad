@@ -5,6 +5,8 @@ inputs:
   - specs/<feature>/feature.spec.md
 outputs:
   - revised specs/<feature>/feature.spec.md
+flags:
+  - --feature <slug>
 ---
 
 You are running **SAD Clarify**.

@@ -5,6 +5,8 @@ inputs:
   - specs/<feature>/feature.plan.md
 outputs:
   - specs/<feature>/tasks.md
+flags:
+  - --feature <slug>
 gate: blocked until walkthrough tier approvals (enforce via hook or human discipline)
 ---
 

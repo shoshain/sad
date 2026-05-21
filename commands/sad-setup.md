@@ -8,6 +8,11 @@ outputs:
   - .sad/ verified or copied
   - specs/ directory convention documented
   - AGENTS.md updated with SAD routing
+flags:
+  - --persistent     wire SessionStart hooks (Claude Code) or alwaysApply rules (Cursor)
+  - --minimal        smallest footprint; skip commands/, agents/, hooks/, evals/, examples/
+  - --dry-run        print actions without writing
+  - --assistant <name>   force adapter: claude-code | cursor | aider | codex | windsurf | none
 ---
 
 You are running **SAD Setup**.

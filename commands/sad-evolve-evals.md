@@ -5,6 +5,9 @@ inputs:
   - recent incidents, reviewer findings, user feedback
 outputs:
   - evals/** new or updated cases
+flags:
+  - --suite <stakeholder|spec-conformance|impl-correctness|architectural-conformance>
+  - --tier <non-technical|semi-technical|technical>   only when --suite stakeholder
 ---
 
 You are running **SAD Evolve Evals**.

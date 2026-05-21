@@ -1,0 +1,39 @@
+name: sad-maturity-report
+
+# Monthly maturity readiness card. Runs the maturity-report script and uploads
+# its JSON so the team can review graduation criteria over time.
+
+on:
+  schedule:
+    # First day of each month at 07:00 UTC
+    - cron: '0 7 1 * *'
+  workflow_dispatch:
+
+jobs:
+  report:
+    name: maturity-report
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run maturity report (text)
+        run: |
+          bash .sad/scripts/maturity-report.sh || true
+
+      - name: Run maturity report (JSON)
+        if: always()
+        run: |
+          bash .sad/scripts/maturity-report.sh --json > maturity-report.json
+          cat maturity-report.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sad-maturity-report
+          path: maturity-report.json
+          if-no-files-found: ignore
+          retention-days: 90

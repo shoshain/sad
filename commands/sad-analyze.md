@@ -4,9 +4,14 @@ phase: per-feature
 inputs:
   - specs/<feature>/feature.spec.md
   - specs/<feature>/feature.plan.md
+  - specs/<feature>/tasks.md (if exists)
   - .sad/memory/constitution.md
 outputs:
-  - analysis report (stdout or specs/<feature>/analysis.md if persistent record requested)
+  - specs/<feature>/analysis.md
+template: .sad/templates/analysis.md
+flags:
+  - --feature <slug>
+  - --stdout    print to stdout instead of writing the file
 ---
 
 You are running **SAD Analyze** (read-only).

@@ -1,0 +1,13 @@
+{
+  "$schema": "../templates/maturity-level.schema.json",
+  "current_level": 0,
+  "level_started_on": "2026-05-21",
+  "previous_levels": [],
+  "graduation_thresholds": {
+    "eval_green_weeks": 4,
+    "reviewer_false_positive_rate_max": 0.10,
+    "stakeholder_satisfaction_min": 0.80,
+    "rollback_rate_max_per_feature": 0.05
+  },
+  "note": "Update this file when a level boundary is crossed. .sad/scripts/maturity-report.{sh,ps1} reads it to compute graduation readiness; /sad-doctor surfaces the current level."
+}

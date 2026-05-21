@@ -6,6 +6,8 @@ inputs:
   - .sad/templates/feature.spec.md
 outputs:
   - specs/<feature>/feature.spec.md
+flags:
+  - --feature <slug>
 gate: non-technical reviewer (draft → approval path)
 ---
 

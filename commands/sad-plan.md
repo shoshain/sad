@@ -9,6 +9,13 @@ outputs:
   - specs/<feature>/data-model.md (as needed)
   - specs/<feature>/contracts/* (as needed)
   - specs/<feature>/research.md (optional)
+templates:
+  - .sad/templates/feature.plan.md
+  - .sad/templates/data-model.md
+  - .sad/templates/research.md
+  - .sad/templates/contracts/example.md
+flags:
+  - --feature <slug>
 gate: semi-technical reviewer
 ---
 

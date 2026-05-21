@@ -3,6 +3,7 @@
 > A composable, AI-native software engineering methodology with a three-tier domain-expert feedback loop at its core, built on the shoulders of giants.
 
 **Website:** <https://sad.codes/>
+**Repository:** <https://github.com/shoshain/sad>
 
 SAD is an operational synthesis. Where a primitive is borrowed from a prior methodology, this repository names the source, links to it, and explains how it was adapted. Novel contributions are flagged explicitly in [`NOVEL.md`](NOVEL.md).
 
@@ -31,6 +32,8 @@ SAD is an operational synthesis. Where a primitive is borrowed from a prior meth
 | [`ATTRIBUTION.md`](ATTRIBUTION.md) | Full provenance table |
 | [`NOVEL.md`](NOVEL.md) | What SAD adds beyond its sources |
 | [`GLOSSARY.md`](GLOSSARY.md) | Terminology |
+| [`TELEMETRY.md`](TELEMETRY.md) | What `--telemetry on` does (writes a local file; no upload) |
+| [`ROADMAP.md`](ROADMAP.md) | Gaps vs the website and the plan to close them |
 
 ## Repository layout
 
@@ -45,8 +48,11 @@ agents/         # reviewers (incl. tier-stand-in-* for Level 0), walkthrough wri
 hooks/          # phase and hook taxonomy (adapt to your toolchain)
 adapters/       # turn-key per-assistant adapter packs (claude-code, cursor, aider, codex, windsurf)
 scripts/        # sad-init.{sh,ps1} — one-command installer
-evals/          # stakeholder / spec-conformance / impl-correctness skeleton
+evals/          # stakeholder / spec-conformance / impl-correctness skeleton + Node runner (run.mjs)
 examples/       # worked example: 001-hello-feature
+reference/      # optional reference-application MCP skeleton (legacy-context pattern)
+brainstormer/   # AISCETA deep-research workspace (NOT /sad-brainstorm output)
+.github/        # workflows: sad-doctor + sad-evals on PR
 specs/          # (in your consuming project) per-feature artifacts — see LIFECYCLE.md
 ```
 

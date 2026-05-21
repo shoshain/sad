@@ -26,6 +26,12 @@ foreach ($sub in @('walkthroughs','demo','stories','evals','contracts')) {
     New-Item -ItemType Directory -Path (Join-Path $feat $sub) -Force | Out-Null
 }
 
+# Drop a starter contract example so the contracts/ folder is not empty on day one.
+$contractExample = Join-Path $tpl 'contracts\example.md'
+if (Test-Path $contractExample) {
+    Copy-Item $contractExample (Join-Path $feat 'contracts\example.md') -Force
+}
+
 function Copy-Template {
     param([string]$Name, [string]$Dest)
     $src = Join-Path $tpl $Name
@@ -40,6 +46,10 @@ Copy-Template 'feature.plan.md'                  (Join-Path $feat 'feature.plan.
 Copy-Template 'tasks.md'                         (Join-Path $feat 'tasks.md')
 Copy-Template 'impact-forecast.md'               (Join-Path $feat 'impact-forecast.md')
 Copy-Template 'reconciliation.md'                (Join-Path $feat 'reconciliation.md')
+Copy-Template 'requirements.draft.md'            (Join-Path $feat 'requirements.draft.md')
+Copy-Template 'data-model.md'                    (Join-Path $feat 'data-model.md')
+Copy-Template 'research.md'                      (Join-Path $feat 'research.md')
+Copy-Template 'analysis.md'                      (Join-Path $feat 'analysis.md')
 Copy-Template 'walkthrough-non-technical.md'     (Join-Path $feat 'walkthroughs\non-technical.md')
 Copy-Template 'walkthrough-semi-technical.md'    (Join-Path $feat 'walkthroughs\semi-technical.md')
 Copy-Template 'walkthrough-technical.md'         (Join-Path $feat 'walkthroughs\technical.md')

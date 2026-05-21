@@ -1,6 +1,24 @@
-# SAD eval harness (skeleton)
+# SAD eval harness
 
-This directory mirrors patterns from [`vercel-labs/agent-eval`](https://github.com/vercel-labs/agent-eval) and Anthropic-style eval discipline. **Wire your own runner** (TypeScript, Python, or CI) — files here are templates.
+Patterns from [`vercel-labs/agent-eval`](https://github.com/vercel-labs/agent-eval) plus Anthropic-style eval discipline.
+
+A minimal Node-based runner ships in [`run.mjs`](run.mjs); requires Node 22+ (uses `--experimental-strip-types` so it can load `EVAL.ts` directly with no third-party dependencies). Replace with vitest / jest / pytest in a real project; the file conventions below are what stays the same.
+
+## Run
+
+```bash
+# from repo root
+node --experimental-strip-types evals/run.mjs            # green/yellow/red text
+node --experimental-strip-types evals/run.mjs --json     # structured JSON
+node --experimental-strip-types evals/run.mjs --verbose  # show per-case detail
+# exit 0 = all pass (stubs OK); exit 1 = any fail or error
+```
+
+Or via the package script:
+
+```bash
+cd evals && npm run eval
+```
 
 ## Suites
 
