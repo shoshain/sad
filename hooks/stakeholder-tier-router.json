@@ -6,11 +6,13 @@
   "handler": {
     "type": "command",
     "command": ".sad/scripts/check-tier-approvals.sh",
-    "args": ["${feature_path}"]
+    "args": ["${feature_path}"],
+    "windows_command": "powershell -NoProfile -ExecutionPolicy Bypass -File .sad/scripts/check-tier-approvals.ps1",
+    "windows_args": ["${feature_path}"]
   },
   "decision": {
     "exit_0": "allow",
     "exit_2": "deny_with_message"
   },
-  "notes": "Set feature_path in your harness (e.g. specs/001-my-feature). Paths are relative to repository root. Adapt matcher to your agent product."
+  "notes": "Set feature_path in your harness (e.g. specs/001-my-feature). Paths are relative to repository root. Adapt matcher to your agent product. Use `command` on POSIX, `windows_command` on Windows; both scripts have identical exit semantics (0=ok, 2=incomplete)."
 }

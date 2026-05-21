@@ -7,8 +7,10 @@
   The target project directory (must already exist).
 
 .PARAMETER Minimal
-  Install only .sad/, LIFECYCLE.md, CHEATSHEET.md, QUICKSTART.md, MATURITY.md, etc.
-  Skip commands/, agents/, hooks/, evals/, examples/.
+  Install only the methodology core (.sad/ + LIFECYCLE.md, CHEATSHEET.md, QUICKSTART.md,
+  MATURITY.md, ROLES.md, MANIFESTO.md, NOVEL.md, GLOSSARY.md, DAEMON.md) and the matching
+  adapter pack. Skip commands/, agents/, hooks/, evals/, examples/, SAD_USER_GUIDE.md, and
+  ATTRIBUTION.md.
 
 .PARAMETER Persistent
   Wire SessionStart hooks (Claude Code) or alwaysApply:true rules (Cursor).
@@ -120,6 +122,7 @@ Copy-One  (Join-Path $sadRoot 'ROLES.md')       (Join-Path $target 'ROLES.md')
 Copy-One  (Join-Path $sadRoot 'MANIFESTO.md')   (Join-Path $target 'MANIFESTO.md')
 Copy-One  (Join-Path $sadRoot 'NOVEL.md')       (Join-Path $target 'NOVEL.md')
 Copy-One  (Join-Path $sadRoot 'GLOSSARY.md')    (Join-Path $target 'GLOSSARY.md')
+Copy-One  (Join-Path $sadRoot 'DAEMON.md')      (Join-Path $target 'DAEMON.md')
 
 if (-not $Minimal) {
     Copy-Dir (Join-Path $sadRoot 'commands') (Join-Path $target 'commands')
@@ -146,7 +149,11 @@ function Apply-Adapter {
         'claude-code' {
             New-Dir (Join-Path $target '.claude\commands')
             New-Dir (Join-Path $target '.claude\skills\sad')
-            $settingsSrc = if ($Persist) { 'settings.persistent.json' } else { 'settings.json' }
+            # Prefer Windows-flavored settings (PowerShell hook commands) when shipped.
+            $settingsSrc = if ($Persist) { 'settings.windows.persistent.json' } else { 'settings.windows.json' }
+            if (-not (Test-Path (Join-Path $apath $settingsSrc))) {
+                $settingsSrc = if ($Persist) { 'settings.persistent.json' } else { 'settings.json' }
+            }
             Copy-One (Join-Path $apath $settingsSrc)            (Join-Path $target '.claude\settings.json')
             Copy-One (Join-Path $apath 'skills\sad\SKILL.md')   (Join-Path $target '.claude\skills\sad\SKILL.md')
             Get-ChildItem -Path (Join-Path $sadRoot 'commands') -Filter 'sad-*.md' -ErrorAction SilentlyContinue | ForEach-Object {
@@ -178,9 +185,6 @@ function Apply-Adapter {
         'windsurf' {
             New-Dir (Join-Path $target '.windsurf\rules')
             Copy-One (Join-Path $apath 'sad-routing.md') (Join-Path $target '.windsurf\rules\sad-routing.md')
-            Copy-One (Join-Path $sadRoot 'adapters\codex\AGENTS.md') (Join-Path $target 'AGENTS.md')
-        }
-        'none' {
             Copy-One (Join-Path $sadRoot 'adapters\codex\AGENTS.md') (Join-Path $target 'AGENTS.md')
         }
         default { Say "unknown adapter: $Name" }

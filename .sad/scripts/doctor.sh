@@ -103,6 +103,20 @@ else
   record "scripts.platform" "yellow" "Only ${SH_COUNT} .sh scripts found; expected at least 4"
 fi
 
+json_escape() {
+  # Escape a string for safe inclusion inside a JSON string literal.
+  # Handles \, ", control chars (newline, CR, tab, backspace, form feed).
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  s="${s//$'\b'/\\b}"
+  s="${s//$'\f'/\\f}"
+  printf '%s' "${s}"
+}
+
 # output
 if [[ "${JSON}" -eq 1 ]]; then
   printf '{ "summary": { "red": %d, "yellow": %d, "green": %d }, "checks": [\n' "${reds}" "${yellows}" "${greens}"
@@ -112,7 +126,7 @@ if [[ "${JSON}" -eq 1 ]]; then
     [[ "${first}" -eq 1 ]] || printf ',\n'
     first=0
     printf '  { "name": "%s", "status": "%s", "message": "%s", "hint": "%s" }' \
-      "${n}" "${s}" "$(printf '%s' "${m}" | sed 's/"/\\"/g')" "$(printf '%s' "${h}" | sed 's/"/\\"/g')"
+      "$(json_escape "${n}")" "$(json_escape "${s}")" "$(json_escape "${m}")" "$(json_escape "${h}")"
   done
   printf '\n]}\n'
 elif [[ "${QUIET}" -ne 1 ]]; then

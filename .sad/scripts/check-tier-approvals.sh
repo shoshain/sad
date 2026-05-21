@@ -14,7 +14,7 @@ approve_line_ok() {
     echo "missing ${file}" >&2
     return 1
   fi
-  if grep -qiE -- "^-\\s*\\[[x]\\].*${label}.*reviewer" "${file}"; then
+  if grep -qiE -- "^-[[:space:]]*\\[x\\].*${label}.*reviewer" "${file}"; then
     return 0
   fi
   echo "Tier approval not checked for '${label}' in ${file}" >&2

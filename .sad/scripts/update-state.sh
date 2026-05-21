@@ -15,12 +15,17 @@ STATE="${ROOT}/.sad/state/sad-state.md"
 replace_kv() {
   local key="$1"
   local val="$2"
-  if grep -q "${key}" "${STATE}"; then
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-      sed -i '' "s#^\\(- \\*\\*${key}\\*\\*: \\).*#\\1${val}#" "${STATE}"
-    else
-      sed -i "s#^\\(- \\*\\*${key}\\*\\*: \\).*#\\1${val}#" "${STATE}"
-    fi
+  [[ -n "${val}" ]] || return 0
+  # Template format: '- **Key:** value' (colon inside bold).
+  local pattern="^\\(- \\*\\*${key}:\\*\\* \\).*"
+  if ! grep -qE -- "- \\*\\*${key}:\\*\\* " "${STATE}"; then
+    echo "Warning: no '- **${key}:** ...' line found in ${STATE}" >&2
+    return 0
+  fi
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    sed -i '' "s#${pattern}#\\1${val}#" "${STATE}"
+  else
+    sed -i "s#${pattern}#\\1${val}#" "${STATE}"
   fi
 }
 

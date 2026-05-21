@@ -28,7 +28,7 @@
       {
         "matcher": "Write|Edit",
         "filePatterns": ["**/tasks.md"],
-        "command": ".sad/scripts/check-tier-approvals.sh \"$(dirname \"$CLAUDE_TOOL_INPUT_file_path\")/..\" || exit 2"
+        "command": ".sad/scripts/check-tier-approvals.sh \"$(dirname \"$CLAUDE_TOOL_INPUT_file_path\")\" || exit 2"
       }
     ],
     "PostToolUse": [

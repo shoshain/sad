@@ -193,7 +193,7 @@ def build_coverage_index(specs_dir: Path) -> dict[str, list[str]]:
     idx: dict[str, list[str]] = defaultdict(list)
     for feat in discover_spec_slugs(specs_dir):
         slug = feat.name
-        yaml_ids, _ycov = load_feature_coverage(feat)
+        yaml_ids, _ = load_feature_coverage(feat)
         spec_ids = reqs_from_feature_spec(feat / "feature.spec.md")
         merged = sorted({*yaml_ids, *spec_ids})
         for rid in merged:
@@ -267,7 +267,7 @@ def render_progress_markdown(
     return "\n".join(lines)
 
 
-def _sort_req_key(rid: str) -> tuple[int, str]:
+def _sort_req_key(rid: str) -> tuple[int, int, str]:
     m = re.search(r"(\d+)", rid)
     num = int(m.group(1)) if m else 0
     prefix = 1 if rid.startswith("NREQ") else 0

@@ -5,8 +5,11 @@
 #   ./scripts/sad-init.sh [flags] <target-dir>
 #
 # Flags:
-#   --minimal              Install only .sad/, LIFECYCLE.md, CHEATSHEET.md, QUICKSTART.md, AGENTS.md.
-#                          Skip commands/, agents/, hooks/, evals/, examples/.
+#   --minimal              Install only the methodology core (.sad/ + LIFECYCLE.md, CHEATSHEET.md,
+#                          QUICKSTART.md, MATURITY.md, ROLES.md, MANIFESTO.md, NOVEL.md, GLOSSARY.md,
+#                          DAEMON.md) and the matching adapter pack.
+#                          Skip commands/, agents/, hooks/, evals/, examples/, SAD_USER_GUIDE.md,
+#                          ATTRIBUTION.md.
 #   --persistent           Wire SessionStart hooks (Claude Code) or alwaysApply:true rules (Cursor).
 #                          No-op for adapters where persistence is the default (Aider, Codex, Windsurf).
 #   --assistant=NAME       Force adapter: auto | claude-code | cursor | aider | codex | windsurf | none.
@@ -111,6 +114,7 @@ copy_file "${SAD_ROOT}/ROLES.md"         "${TARGET}/ROLES.md"
 copy_file "${SAD_ROOT}/MANIFESTO.md"     "${TARGET}/MANIFESTO.md"
 copy_file "${SAD_ROOT}/NOVEL.md"         "${TARGET}/NOVEL.md"
 copy_file "${SAD_ROOT}/GLOSSARY.md"      "${TARGET}/GLOSSARY.md"
+copy_file "${SAD_ROOT}/DAEMON.md"        "${TARGET}/DAEMON.md"
 
 if [[ "${MINIMAL}" -ne 1 ]]; then
   copy_dir "${SAD_ROOT}/commands"        "${TARGET}/commands"
@@ -182,9 +186,6 @@ EOF
     windsurf)
       do_run mkdir -p "${TARGET}/.windsurf/rules"
       copy_file "${apath}/sad-routing.md"              "${TARGET}/.windsurf/rules/sad-routing.md"
-      copy_file "${SAD_ROOT}/adapters/codex/AGENTS.md" "${TARGET}/AGENTS.md"
-      ;;
-    none)
       copy_file "${SAD_ROOT}/adapters/codex/AGENTS.md" "${TARGET}/AGENTS.md"
       ;;
     *) say "unknown adapter: ${name}";;
