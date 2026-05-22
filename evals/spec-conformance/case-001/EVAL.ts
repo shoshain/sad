@@ -11,9 +11,22 @@
 export type EvalResult = {
   passed: boolean;
   details: string[];
+  reason?: string;
 };
 
 export function evaluateSpec(specMarkdown: string): EvalResult {
+  // Stub-safe: when wired against the case PROMPT.md (which is the eval's own
+  // instructions, not a real feature.spec.md), neither C* nor AC* will appear.
+  // Treat that as a stub instead of a real fail so CI surfaces "not wired yet"
+  // rather than "spec violates the rule." A real grading run supplies a real
+  // feature.spec.md and the rest of the function runs normally.
+  if (!/^- C\d+\./m.test(specMarkdown) && !/^- AC\d+\./m.test(specMarkdown)) {
+    return {
+      passed: false,
+      details: [],
+      reason: "stub: no fixture spec wired (PROMPT.md is the case instructions, not a feature.spec.md)",
+    };
+  }
   const details: string[] = [];
   const capabilities = new Set(
     Array.from(specMarkdown.matchAll(/^- C(\d+)\./gm)).map((m) => Number(m[1])),

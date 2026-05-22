@@ -40,7 +40,12 @@ if (-not (Test-Path $constitution)) {
     Add-Check 'constitution.exists' 'red' '.sad/memory/constitution.md is missing' 'Run /sad-constitution or copy a starter from .sad/templates/constitutions/'
 } else {
     $body = Get-Content $constitution -Raw
-    if ($body -match '\[name\]' -or $body -match '\[who\]') {
+    # Distinguish "untouched ships-with-the-kit template" (yellow, expected in the
+    # methodology repo itself and on day 0 of a consuming project) from "someone
+    # started filling it in and abandoned mid-edit" (red, blocks the gate).
+    if ($body -match '(?m)^> \*\*Template\.\*\*') {
+        Add-Check 'constitution.identity' 'yellow' 'Constitution is still the unmodified template' 'Run /sad-constitution or copy a starter from .sad/templates/constitutions/'
+    } elseif ($body -match '\[name\]' -or $body -match '\[who\]') {
         Add-Check 'constitution.identity' 'red' 'Constitution still contains [name] / [who] placeholders' 'Fill in Identity section'
     } else {
         Add-Check 'constitution.identity' 'green' 'Identity section filled' ''

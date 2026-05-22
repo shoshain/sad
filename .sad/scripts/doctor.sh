@@ -34,7 +34,12 @@ CONST="${ROOT}/.sad/memory/constitution.md"
 if [[ ! -f "${CONST}" ]]; then
   record "constitution.exists" "red" ".sad/memory/constitution.md is missing" "Run /sad-constitution or copy a starter from .sad/templates/constitutions/"
 else
-  if grep -qE "\[name\]|\[who\]" "${CONST}"; then
+  # Distinguish "untouched ships-with-the-kit template" (yellow, expected in the
+  # methodology repo itself and on day 0 of a consuming project) from "someone
+  # started filling it in and abandoned mid-edit" (red, blocks the gate).
+  if grep -qE "^> \*\*Template\.\*\*" "${CONST}"; then
+    record "constitution.identity" "yellow" "Constitution is still the unmodified template" "Run /sad-constitution or copy a starter from .sad/templates/constitutions/"
+  elif grep -qE "\[name\]|\[who\]" "${CONST}"; then
     record "constitution.identity" "red" "Constitution still contains [name] / [who] placeholders" "Fill in Identity section"
   else
     record "constitution.identity" "green" "Identity section filled"
