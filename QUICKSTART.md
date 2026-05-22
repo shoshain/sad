@@ -22,7 +22,7 @@ If that sounds useful, keep reading.
 
 - An AI coding assistant: Claude Code, Cursor, Aider, Codex CLI, or Windsurf (any of them).
 - Either **Node 18+** (preferred — runs on every OS) or **bash + PowerShell** (the installer works with both).
-- A target repo. A fresh `git init` directory is fine for this walkthrough.
+- A target repo. A fresh `git init` directory is fine for this walkthrough. Alternatively, clone the **[sad-test-repo](https://github.com/shoshain/sad-test-repo)** sandbox and follow [`testing_sad.md`](https://github.com/shoshain/sad-test-repo/blob/main/testing_sad.md) for a full kit validation run (typical local path: `C:\SAD-testing-repo`).
 
 If you have none of those yet, install Node and `git init` a fresh directory — that is all you need.
 
@@ -45,6 +45,7 @@ Add `--persistent` if you want SAD context to load automatically in every new ch
 Add `--minimal` if you only want the bare-minimum footprint for this 30-minute walkthrough. You can always re-run the installer to get more later.
 
 The installer:
+
 1. Copies `.sad/`, `commands/`, `agents/`, `hooks/`, `evals/`, and the top-level reference docs into your project.
 2. Auto-detects your AI coding assistant by looking for `.claude/`, `.cursor/`, `.aider*`, `.codex/`, `.windsurf/`, or `AGENTS.md` at your target's root.
 3. Writes the matching adapter pack (see [`adapters/`](adapters/) in this repo).
@@ -94,6 +95,8 @@ This creates `specs/001-hello-greeting/` with all the template files in place.
 
 ## 4. Walk one truncated lifecycle (15 minutes)
 
+> **Shortcut for the impatient:** invoke **`/sad-next`** and let the conductor drive. It reads `.sad/state/sad-state.md`, runs whichever phase command is next, updates state, and stops at the two human gates (walkthrough approvals, reconciliation sign-off) with inline approval prompts. The hand-walked path below is the same lifecycle, exposed step-by-step so you can see what each phase produces. See [`commands/sad-next.md`](commands/sad-next.md) and [`DAEMON.md §0`](DAEMON.md).
+
 For your first feature, **skip** `/sad-brainstorm`, `/sad-clarify`, `/sad-impact-forecast`, `/sad-analyze`, `/sad-tasks`, and `/sad-compound`. They all have their place — the full lifecycle is in [`LIFECYCLE.md`](LIFECYCLE.md) — but they are not the minimum.
 
 Walk this path only:
@@ -123,7 +126,9 @@ If you didn't, you can wire it in now:
 
 That is what "persistent" means in SAD: your AI assistant rehydrates the constitution, the three-tier rules, and the current lifecycle stage at the start of every chat without you re-pasting them.
 
-**SAD does NOT run as a long-lived background daemon.** It is Markdown-first and portable. The AI assistant *is* the daemon. See [`DAEMON.md`](DAEMON.md) for the full rationale and the one narrow case where a file-watcher does help.
+**SAD does NOT run as a long-lived background daemon.** It is Markdown-first and portable. The AI assistant *is* the daemon — and with `/sad-next`, it actively conducts. Every persistent session now also prints a one-line `SAD next step: /sad-X` nudge at startup (sourced from `.sad/scripts/next-step.{sh,ps1}`), so you never have to ask "where was I?" See [`DAEMON.md`](DAEMON.md) for the full rationale and the one narrow case where a file-watcher does help.
+
+If you want cadence work (drift scans, compound refresh, eval evolution) to run on a schedule too, re-run the installer with `--schedule` / `-Schedule`. It registers cron entries (POSIX) or Task Scheduler tasks (Windows) via `scripts/sad-schedule.{sh,ps1}` — still no daemon, just the OS scheduler.
 
 ---
 

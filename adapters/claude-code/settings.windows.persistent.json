@@ -22,7 +22,7 @@
   "hooks": {
     "SessionStart": [
       {
-        "command": "powershell -NoProfile -Command \"Get-Content -ErrorAction SilentlyContinue AGENTS.md, .sad/rules/core/README.md, .sad/state/sad-state.md; Write-Output '---'; Get-Content -TotalCount 80 -ErrorAction SilentlyContinue .sad/memory/constitution.md\""
+        "command": "powershell -NoProfile -Command \"Get-Content -ErrorAction SilentlyContinue AGENTS.md, .sad/rules/core/README.md, .sad/state/sad-state.md; Write-Output '---'; Get-Content -TotalCount 80 -ErrorAction SilentlyContinue .sad/memory/constitution.md; Write-Output '---'; try { & .sad/scripts/next-step.ps1 } catch { }\""
       }
     ],
     "PreToolUse": [

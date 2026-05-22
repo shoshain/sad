@@ -1,5 +1,7 @@
 # SAD Cheatsheet — one page
 
+> **Don't want to remember the 14 commands?** Invoke **`/sad-next`** (the conductor). It reads `.sad/state/sad-state.md`, runs the next non-human phase, and stops at the next human gate with an inline approval prompt. One keystroke per phase. See [`commands/sad-next.md`](commands/sad-next.md) and [`DAEMON.md §0`](DAEMON.md).
+
 ```mermaid
 flowchart TD
     setup["1 /sad-setup &nbsp;·&nbsp; 2 /sad-constitution<br/>(project-level, once)"]
@@ -43,6 +45,7 @@ flowchart TD
 | 12 | `/sad-review` | reviewer-fleet reports | technical | `/sad-reconcile` |
 | 13 | `/sad-reconcile` | `reconciliation.md` (verdicts) | semi-technical | `/sad-compound` |
 | 14 | `/sad-compound` | `.sad/memory/lessons/*.md` | — | (next feature) |
+| — | `/sad-next` | (the conductor — runs whichever of 1–14 is next, stops at human gates) | — | re-invoke until done |
 
 ## Effort split (Compound Engineering default)
 

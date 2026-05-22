@@ -10,10 +10,11 @@ When this skill is active, the assistant operates under the SAD methodology defi
 
 ## Triggers
 
-- The user types `/sad-<command>` (any of the 20 lifecycle commands).
+- The user types `/sad-<command>` (any of the 20 lifecycle commands, including the conductor `/sad-next`).
+- The user asks "what's next?", "where was I?", or any equivalent that implies they want the conductor to resolve and run the next SAD phase — invoke `/sad-next` from [`commands/sad-next.md`](../../../../commands/sad-next.md).
 - The user edits or creates files under `specs/<NNN>-<slug>/`.
 - The user asks about features, specs, walkthroughs, the three tiers, the reconciliation phase, the constitution, or the maturity ladder.
-- The user runs `sad-doctor`, `create-feature`, or any script under `.sad/scripts/`.
+- The user runs `sad-doctor`, `create-feature`, `next-step`, or any script under `.sad/scripts/`.
 
 ## What to do
 
@@ -32,7 +33,7 @@ When this skill is active, the assistant operates under the SAD methodology defi
 ## Outputs you should produce
 
 - Updated artifacts under `specs/<slug>/` per the requested command.
-- Updated `.sad/state/sad-state.md` reflecting the current phase, via `.sad/scripts/update-state.{sh,ps1}`.
+- Updated `.sad/state/sad-state.md` reflecting the current phase, via `.sad/scripts/update-state.{sh,ps1}`. The `Phase:` value must be one of the enum values defined in `.sad/state/sad-state.md` so `/sad-next` and `next-step.{sh,ps1}` can resolve the next step.
 - New lessons under `.sad/memory/lessons/` when invoking `/sad-compound`.
 
 ## Reading order on first invocation

@@ -34,20 +34,21 @@ SAD is an operational synthesis. Where a primitive is borrowed from a prior meth
 | [`GLOSSARY.md`](GLOSSARY.md) | Terminology |
 | [`TELEMETRY.md`](TELEMETRY.md) | What `--telemetry on` does (writes a local file; no upload) |
 | [`ROADMAP.md`](ROADMAP.md) | Gaps vs the website and the plan to close them |
+| [sad-test-repo `testing_sad.md`](https://github.com/shoshain/sad-test-repo/blob/main/testing_sad.md) | End-to-end kit validation (companion sandbox, not this repo) |
 
 ## Repository layout
 
-```
+```text
 AGENTS.md       # how coding agents should navigate this methodology repo
 QUICKSTART.md   # 30-minute first-feature walkthrough
 CHEATSHEET.md   # one-page visual reference
 DAEMON.md       # why SAD does not run as a daemon
 .sad/           # constitution, lessons, stakeholders, rules, templates (incl. constitutions/ starter pack), scripts, state
-commands/       # sad-* slash command specifications (including /sad-doctor)
+commands/       # sad-* slash command specifications (including /sad-doctor and /sad-next, the conductor)
 agents/         # reviewers (incl. tier-stand-in-* for Level 0), walkthrough writers, reconciliation, research
 hooks/          # phase and hook taxonomy (adapt to your toolchain)
 adapters/       # turn-key per-assistant adapter packs (claude-code, cursor, aider, codex, windsurf)
-scripts/        # sad-init.{sh,ps1} — one-command installer
+scripts/        # sad-init.{sh,ps1} (installer) + sad-schedule.{sh,ps1} (cron / Task Scheduler entries)
 evals/          # stakeholder / spec-conformance / impl-correctness skeleton + Node runner (run.mjs)
 examples/       # worked example: 001-hello-feature
 reference/      # optional reference-application MCP skeleton (legacy-context pattern)
@@ -68,7 +69,9 @@ The fast path (recommended):
 .\scripts\sad-init.ps1 -TargetDir C:\path\to\your-project -Persistent
 ```
 
-The installer auto-detects your AI assistant (Claude Code, Cursor, Aider, Codex, Windsurf), copies the methodology files into your target project, writes the matching adapter pack from [`adapters/`](adapters/), and (with `--persistent`) wires SAD context to load at the start of every chat. Add `--minimal` for the lowest footprint; `--dry-run` to preview; `--help` for the full flag list.
+The installer auto-detects your AI assistant (Claude Code, Cursor, Aider, Codex, Windsurf), copies the methodology files into your target project, writes the matching adapter pack from [`adapters/`](adapters/), and (with `--persistent`) wires SAD context to load at the start of every chat. Add `--minimal` for the lowest footprint; `--schedule` to install the cadence-command cron / Task Scheduler entries; `--dry-run` to preview; `--help` for the full flag list.
+
+Once installed, invoke **`/sad-next`** (the conductor) instead of remembering the 14-command chain. It reads `.sad/state/sad-state.md`, runs the next non-human phase, and stops at the two human gates with inline approval prompts. See [`commands/sad-next.md`](commands/sad-next.md) and [`DAEMON.md §0`](DAEMON.md).
 
 If you prefer to do it by hand:
 
@@ -84,6 +87,21 @@ Helper scripts: [`.sad/scripts/`](.sad/scripts/) — `.sh` (POSIX) and `.ps1` (W
 ## Example feature
 
 See [`examples/001-hello-feature/`](examples/001-hello-feature/).
+
+## End-to-end test sandbox
+
+To exercise the full lifecycle (install, constitution, tier gate, evals, doctor) against a disposable consuming project — without touching your real codebase — use the companion repo **[shoshain/sad-test-repo](https://github.com/shoshain/sad-test-repo)**.
+
+| | |
+| --- | --- |
+| **GitHub** | <https://github.com/shoshain/sad-test-repo> |
+| **Test plan** | [`testing_sad.md`](https://github.com/shoshain/sad-test-repo/blob/main/testing_sad.md) — copy-paste PowerShell sections; run every command **in the test repo**, not in this kit |
+| **Typical local clone** | `C:\SAD-testing-repo` as a sibling of `C:\SAD` |
+
+```powershell
+git clone https://github.com/shoshain/sad.git C:\SAD
+git clone https://github.com/shoshain/sad-test-repo.git C:\SAD-testing-repo
+```
 
 ## License
 

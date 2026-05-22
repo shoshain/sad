@@ -15,6 +15,9 @@
 #   --assistant=NAME       Force adapter: auto | claude-code | cursor | aider | codex | windsurf | none.
 #                          Default: auto-detect.
 #   --telemetry=on|off     Opt-in anonymous adoption telemetry. Default: off.
+#   --schedule             Install the 3 SAD scheduled commands (drift-scan daily, compound-refresh
+#                          monthly, evolve-evals weekly) as cron entries via scripts/sad-schedule.sh.
+#                          Per DAEMON.md §2 this is OS-scheduler-owned, not a SAD daemon.
 #   --force                Overwrite existing files. Default: skip files that already exist.
 #   --dry-run              Print what would be done; write nothing.
 #   -h, --help             This message.
@@ -29,6 +32,7 @@ set -euo pipefail
 
 MINIMAL=0
 PERSISTENT=0
+SCHEDULE=0
 ASSISTANT=auto
 TELEMETRY=off
 FORCE=0
@@ -41,6 +45,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --minimal)        MINIMAL=1; shift;;
     --persistent)     PERSISTENT=1; shift;;
+    --schedule)       SCHEDULE=1; shift;;
     --assistant=*)    ASSISTANT="${1#--assistant=}"; shift;;
     --telemetry=*)    TELEMETRY="${1#--telemetry=}"; shift;;
     --force)          FORCE=1; shift;;
@@ -212,5 +217,19 @@ if [[ -f "${TARGET}/.sad/scripts/doctor.sh" ]]; then
   (cd "${TARGET}" && bash .sad/scripts/doctor.sh) || say "doctor reported findings (this is normal on a fresh install)"
 fi
 
-say "done. target: ${TARGET} ; adapter: ${DETECTED} ; persistent: ${PERSISTENT} ; minimal: ${MINIMAL}"
-say "next: cd ${TARGET} && open QUICKSTART.md"
+# --- scheduled tasks (cron) ---
+if [[ "${SCHEDULE}" -eq 1 ]]; then
+  if [[ -f "${SAD_ROOT}/scripts/sad-schedule.sh" ]]; then
+    say "installing OS scheduled tasks (cron) for SAD cadence commands"
+    if [[ "${DRY_RUN}" -eq 1 ]]; then
+      bash "${SAD_ROOT}/scripts/sad-schedule.sh" dry-run install "${TARGET}" || true
+    else
+      bash "${SAD_ROOT}/scripts/sad-schedule.sh" install "${TARGET}" || say "schedule install reported an issue — see scripts/sad-schedule.sh --help"
+    fi
+  else
+    say "WARN: --schedule requested but scripts/sad-schedule.sh not found in kit"
+  fi
+fi
+
+say "done. target: ${TARGET} ; adapter: ${DETECTED} ; persistent: ${PERSISTENT} ; minimal: ${MINIMAL} ; schedule: ${SCHEDULE}"
+say "next: cd ${TARGET} && open QUICKSTART.md  (or run /sad-next in your AI assistant)"

@@ -4,6 +4,17 @@
 
 This page exists because it is a *natural* question to ask. SAD has 14 numbered lifecycle steps, four background-maintenance commands (`/sad-spec-drift-scan`, `/sad-compound-refresh`, `/sad-evolve-evals`, `/sad-requirements-progress`), and a `.sad/state/sad-state.md` file that tracks the current feature and phase. "If you already have state, scheduled tasks, and per-feature directories, why not run it as a daemon?"
 
+## §0. The reframe: the assistant is an *active* conductor, not a passive context loader
+
+The original framing — "the AI coding assistant *is* the daemon" — was correct but understated what the assistant should *do*. Two ergonomic pieces close the gap without introducing a real daemon:
+
+1. **`/sad-next`** (see [`commands/sad-next.md`](commands/sad-next.md)) — the conductor command. The user invokes one command instead of remembering the 14-step chain. `/sad-next` reads `.sad/state/sad-state.md`, dispatches the next non-human phase, updates state, and stops at the next human gate with an inline approval prompt. Internally it relies on [`.sad/scripts/next-step.{sh,ps1}`](.sad/scripts/) — a pure read-only state inspector that maps the `Phase:` enum to the next slash command.
+2. **`sad-init --persistent` extended SessionStart hook** — at the start of every chat, the hook prints the constitution head plus a one-line `SAD next step: /sad-X` nudge from the same state inspector. The user no longer has to ask "where was I?"
+
+Both pieces are in-process. No new processes; no file watcher; nothing that survives the assistant session. The conductor stops at every human gate — Level 0 included — and the assistant must never tick approval checkboxes on the user's behalf.
+
+The four-interpretation table below is unchanged; the conductor lives in (c).
+
 The honest answer requires distinguishing four things people mean by "daemon":
 
 | Interpretation | Should SAD do this? | Why |
@@ -66,6 +77,32 @@ These need to run on a cadence, but **they do not need a SAD-owned daemon to run
 
 A SAD-shipped CI workflow template — `.github/workflows/sad-checks.yml.example` — is a natural ship target for the next minor release of the kit. It runs `/sad-doctor` on every push and the three scheduled commands at their stated cadences. That is the *right* shape of "scheduled SAD" — pinned to existing infrastructure the team already operates.
 
+### `sad-init --schedule` / `-Schedule`
+
+For developer machines, the kit now ships [`scripts/sad-schedule.sh`](scripts/sad-schedule.sh) (cron) and [`scripts/sad-schedule.ps1`](scripts/sad-schedule.ps1) (Windows Task Scheduler). They are invoked automatically when `sad-init` is run with `--schedule` / `-Schedule`, or you can run them standalone:
+
+```bash
+# POSIX
+./scripts/sad-schedule.sh install   /path/to/project
+./scripts/sad-schedule.sh uninstall /path/to/project
+./scripts/sad-schedule.sh list      /path/to/project
+
+# Windows
+.\scripts\sad-schedule.ps1 -Action install   -TargetDir C:\path\to\project
+.\scripts\sad-schedule.ps1 -Action uninstall -TargetDir C:\path\to\project
+.\scripts\sad-schedule.ps1 -Action list      -TargetDir C:\path\to\project
+```
+
+What it installs:
+
+| Cadence command | Runs | What the scheduled job actually does |
+|---|---|---|
+| `/sad-spec-drift-scan` | daily 09:00 | Executes `.sad/scripts/drift-scan.{sh,ps1}` unattended; appends findings to `.sad/state/scheduled-reminders.log` |
+| `/sad-compound-refresh` | monthly | Writes a reminder line to `.sad/state/scheduled-reminders.log` — the actual work happens *inside* the next AI assistant session when the human invokes the slash command |
+| `/sad-evolve-evals` | weekly Monday | Same pattern as compound-refresh — a scheduled reminder, not a substitute for the in-session command |
+
+Why the latter two are reminders rather than full executions: curating lessons and evolving evals requires the AI assistant's reasoning loop, which the OS scheduler cannot host. The right shape is a nudge that the user picks up on their next session. This preserves the "no long-lived SAD process" promise — the cron/Task-Scheduler entries are owned by the OS and can be removed with `sad-schedule uninstall`.
+
 ---
 
 ## §3. The session-persistence case (already implemented)
@@ -89,6 +126,8 @@ When the user runs:
 | Windsurf | `.windsurf/rules/sad-routing.md` — Windsurf auto-loads files under `.windsurf/rules/` (persistence is the default; `--persistent` is a no-op for Windsurf) |
 
 This is what people *actually want* when they say "make SAD persistent in my Claude Code session" or "in my Cursor chat." They want SAD context to rehydrate without re-pasting. The session-start hook gives them exactly that, on the existing process, without introducing a new one.
+
+**As of the conductor release**, the SessionStart hook also runs [`.sad/scripts/next-step.{sh,ps1}`](.sad/scripts/) and prints one extra line — `SAD next step: /sad-X` — so the user starts every session knowing exactly which slash command (or `/sad-next`) to invoke. See §0 above.
 
 ---
 
@@ -129,17 +168,21 @@ Register-ObjectEvent $watcher Changed -Action { & .\.sad\scripts\doctor.ps1 } | 
 |---|---|
 | Does SAD ship a long-lived daemon? | No. |
 | Does SAD have continuous responsibilities? | No — work happens at session boundaries, command invocations, and scheduled cadences. |
-| How does SAD persist in an AI session? | Via assistant-native mechanisms — SessionStart hooks (Claude Code), `alwaysApply: true` rules (Cursor), auto-loaded conventions (Aider, Codex, Windsurf). The `sad-init --persistent` flag wires whichever applies. |
-| How do scheduled tasks run? | `cron` / Task Scheduler / launchd / CI scheduled workflows — owned by the user's existing infrastructure, not by SAD. |
+| How does SAD persist in an AI session? | Via assistant-native mechanisms — SessionStart hooks (Claude Code), `alwaysApply: true` rules (Cursor), auto-loaded conventions (Aider, Codex, Windsurf). The `sad-init --persistent` flag wires whichever applies; the hook also prints the next-step nudge. |
+| How do I avoid remembering 14 commands in order? | Invoke **`/sad-next`** (the conductor). It reads state, runs the next non-human phase, and stops at the next human gate with an inline approval prompt. See §0. |
+| How do scheduled tasks run? | `cron` / Task Scheduler / launchd / CI scheduled workflows — owned by the user's existing infrastructure, not by SAD. `sad-init --schedule` wires the OS scheduler for you via [`scripts/sad-schedule.{sh,ps1}`](scripts/). |
 | Is there a file-watcher mode? | Optional dev-mode utility, opt-in, per-session-scoped — not yet shipped; hand-rolled snippet provided above. |
 
-**The principle that resolves every case:** *The AI coding assistant is the daemon SAD would otherwise need to be.* Every continuous responsibility lives inside the assistant session via SessionStart hooks or always-loaded rules. Every periodic responsibility lives inside the user's existing scheduler. SAD itself stays Markdown.
+**The principle that resolves every case:** *The AI coding assistant is the daemon SAD would otherwise need to be — and `/sad-next` is how it actively conducts.* Every continuous responsibility lives inside the assistant session via SessionStart hooks, always-loaded rules, and the conductor. Every periodic responsibility lives inside the user's existing scheduler. SAD itself stays Markdown.
 
 ---
 
 ## See also
 
+- [`commands/sad-next.md`](commands/sad-next.md) — the conductor command.
+- [`.sad/scripts/next-step.sh`](.sad/scripts/next-step.sh) / [`next-step.ps1`](.sad/scripts/next-step.ps1) — read-only state inspector used by the conductor and SessionStart hook.
+- [`scripts/sad-schedule.sh`](scripts/sad-schedule.sh) / [`sad-schedule.ps1`](scripts/sad-schedule.ps1) — install/uninstall OS-level cron / Task Scheduler entries for the cadence commands.
 - [`MATURITY.md`](MATURITY.md) — Level 0 (Solo SAD), where this lightweight stance matters most.
 - [`adapters/`](adapters/) — per-assistant adapter packs that implement session persistence.
-- [`scripts/sad-init.sh`](scripts/sad-init.sh) / [`sad-init.ps1`](scripts/sad-init.ps1) — the installer with `--persistent`.
+- [`scripts/sad-init.sh`](scripts/sad-init.sh) / [`sad-init.ps1`](scripts/sad-init.ps1) — the installer with `--persistent` and `--schedule`.
 - [`LIFECYCLE.md`](LIFECYCLE.md) "BACKGROUND (scheduled)" — the three commands that benefit from cadence.

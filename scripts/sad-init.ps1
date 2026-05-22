@@ -16,6 +16,11 @@
   Wire SessionStart hooks (Claude Code) or alwaysApply:true rules (Cursor).
   No-op for adapters where persistence is the default (Aider, Codex, Windsurf).
 
+.PARAMETER Schedule
+  Install the 3 SAD scheduled commands as Windows Task Scheduler tasks (drift-scan daily,
+  compound-refresh monthly, evolve-evals weekly) via scripts/sad-schedule.ps1.
+  Per DAEMON.md §2 this is OS-scheduler-owned, not a SAD daemon.
+
 .PARAMETER Assistant
   Force adapter: auto | claude-code | cursor | aider | codex | windsurf | none.
 
@@ -41,6 +46,7 @@ param(
 
     [switch]$Minimal,
     [switch]$Persistent,
+    [switch]$Schedule,
     [ValidateSet('auto','claude-code','cursor','aider','codex','windsurf','none')]
     [string]$Assistant = 'auto',
     [ValidateSet('on','off')]
@@ -219,5 +225,23 @@ if (Test-Path $doctor) {
     }
 }
 
-Say "done. target: $target ; adapter: $detected ; persistent: $Persistent ; minimal: $Minimal"
-Say "next: cd $target ; open QUICKSTART.md"
+if ($Schedule) {
+    $schedScript = Join-Path $sadRoot 'scripts\sad-schedule.ps1'
+    if (Test-Path $schedScript) {
+        Say 'installing OS scheduled tasks (Task Scheduler) for SAD cadence commands'
+        try {
+            if ($DryRun) {
+                & $schedScript -Action install -TargetDir $target -DryRun
+            } else {
+                & $schedScript -Action install -TargetDir $target
+            }
+        } catch {
+            Say "schedule install reported an issue: $($_.Exception.Message)"
+        }
+    } else {
+        Say 'WARN: -Schedule requested but scripts/sad-schedule.ps1 not found in kit'
+    }
+}
+
+Say "done. target: $target ; adapter: $detected ; persistent: $Persistent ; minimal: $Minimal ; schedule: $Schedule"
+Say "next: cd $target ; open QUICKSTART.md  (or run /sad-next in your AI assistant)"

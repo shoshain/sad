@@ -22,7 +22,7 @@
   "hooks": {
     "SessionStart": [
       {
-        "command": "cat AGENTS.md .sad/rules/core/README.md .sad/state/sad-state.md 2>/dev/null; echo '---'; head -n 80 .sad/memory/constitution.md 2>/dev/null"
+        "command": "cat AGENTS.md .sad/rules/core/README.md .sad/state/sad-state.md 2>/dev/null; echo '---'; head -n 80 .sad/memory/constitution.md 2>/dev/null; echo '---'; bash .sad/scripts/next-step.sh 2>/dev/null || true"
       }
     ],
     "PreToolUse": [

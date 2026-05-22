@@ -33,6 +33,12 @@ After that, load specific lifecycle files on demand.
 
 Read the canonical prompt at `commands/sad-<command>.md`. Follow its `Your task` and `Discipline` sections exactly.
 
+## The conductor: `/sad-next`
+
+If the user invokes `/sad-next`, follow [`commands/sad-next.md`](../../commands/sad-next.md). It reads `.sad/state/sad-state.md`, dispatches the next non-human phase, updates state, and stops at the next human gate (walkthrough approvals, reconciliation sign-off) with inline approval prompts. This is the single command that turns the 14-step lifecycle into one keystroke per phase.
+
+When the user opens a new chat, also read the output of `.sad/scripts/next-step.{sh,ps1}` to see which phase is next — it returns a one-line `SAD next step: /sad-X` hint based on the current `Phase:` enum.
+
 ## Hard rules (also in `.sad/rules/core/README.md`)
 
 - **SAD-CR-001 — Constitution first.** Every planning, implementation, and review action must respect `.sad/memory/constitution.md`. If a task conflicts with the constitution, stop and escalate.
