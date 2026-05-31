@@ -1,0 +1,114 @@
+# Archangel methodology-pack manifest for Stakeholder-Anchored
+# Development (SAD).
+#
+# This file teaches Archangel how to read SAD-managed work in a
+# *consuming* project: where the per-feature spec folders live
+# (`specs/*/`), which file carries the task checklist (`tasks.md`), and
+# what the lifecycle phases + their artefact gates are. Archangel never
+# writes into a consuming project on a pack's behalf — `fs_write` is
+# empty by contract.
+#
+# Lifecycle mirrors LIFECYCLE.md's per-feature loop (steps 3–14). The
+# once-per-project steps (sad-setup, sad-constitution) are not modelled
+# as per-spec phases; the constitution is surfaced via `constitution_file`.
+
+methodology-pack-contract = "1"
+
+[pack]
+slug         = "sad"
+name         = "Stakeholder-Anchored Development"
+version      = "0.1.0"
+adapter_kind = "manifest"
+
+[layout]
+# Where, in a consuming project, live per-feature work is found.
+spec_root_glob      = "specs/*/"
+lifecycle_file      = "tasks.md"
+reconciliation_file = "reconciliation.md"
+constitution_file   = ".sad/memory/constitution.md"
+
+[[lifecycle.phase]]
+id    = "brainstorm"
+label = "Brainstorm"
+order = 1
+gate  = { kind = "artefact_exists", path = "requirements.draft.md" }
+
+[[lifecycle.phase]]
+id    = "specify"
+label = "Specify"
+order = 2
+gate  = { kind = "artefact_exists", path = "feature.spec.md" }
+
+[[lifecycle.phase]]
+id    = "clarify"
+label = "Clarify"
+order = 3
+gate  = { kind = "none" }
+
+[[lifecycle.phase]]
+id    = "impact-forecast"
+label = "Impact Forecast"
+order = 4
+gate  = { kind = "artefact_exists", path = "impact-forecast.md" }
+
+[[lifecycle.phase]]
+id    = "plan"
+label = "Plan"
+order = 5
+gate  = { kind = "artefact_exists", path = "feature.plan.md" }
+
+[[lifecycle.phase]]
+id    = "walkthrough"
+label = "Walkthrough (tier-routed approval)"
+order = 6
+gate  = { kind = "artefact_exists", path = "walkthroughs/technical.md" }
+
+[[lifecycle.phase]]
+id    = "analyze"
+label = "Analyze"
+order = 7
+gate  = { kind = "artefact_exists", path = "analysis.md" }
+
+[[lifecycle.phase]]
+id    = "tasks"
+label = "Tasks"
+order = 8
+gate  = { kind = "artefact_exists", path = "tasks.md" }
+
+[[lifecycle.phase]]
+id    = "implement"
+label = "Implement"
+order = 9
+gate  = { kind = "none" }
+
+[[lifecycle.phase]]
+id    = "review"
+label = "Review"
+order = 10
+gate  = { kind = "none" }
+
+[[lifecycle.phase]]
+id    = "reconcile"
+label = "Reconcile"
+order = 11
+gate  = { kind = "artefact_exists", path = "reconciliation.md" }
+
+[[lifecycle.phase]]
+id    = "compound"
+label = "Compound (lessons)"
+order = 12
+gate  = { kind = "none" }
+
+[hints]
+weight_blocker = 3.0
+weight_overlap = 1.5
+weight_article = 1.0
+
+[capabilities]
+# Read-only globs (informational for manifest packs; enforced for
+# wasm/mcp). fs_write MUST stay empty in v1 — Archangel never lets a
+# pack mutate user files.
+fs_read       = ["specs/*/", ".sad/**"]
+fs_write      = []
+network       = false
+process_spawn = false
