@@ -1,4 +1,6 @@
 .DS_Store
+# AppleDouble resource-fork sidecars (non-HFS+ volumes)
+._*
 .env
 .env.*
 *.log
