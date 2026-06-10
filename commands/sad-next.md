@@ -70,6 +70,12 @@ When `kind == "gate"` (`walkthrough` or `reconcile`), do **not** invoke any phas
 SAD walkthrough gate — feature <slug>
 
 Three tier approvals are required before /sad-analyze can run.
+Run `./.sad/scripts/gate-status.sh` for the program-wide queue.
+
+For tiers not yet available synchronously, offer **defer**:
+- Run `/sad-stakeholder-report --tier <tier>` to write `reports/<tier>-packet-vN.md`
+- Set **Approval status: pending**, **Prepared for**, **Pending since**, **Review packet** on the walkthrough
+- Pending still blocks `/sad-tasks` until the human later ticks `[x]` and sets status to **approved**
 
   Non-technical reviewer
     Artifact: specs/<slug>/walkthroughs/non-technical.md
@@ -89,7 +95,7 @@ Three tier approvals are required before /sad-analyze can run.
 
 For each tier the user marks `yes`:
 
-1. Tick the matching approval checkbox in `walkthroughs/<tier>.md`. The line shape is `- [ ] <Tier-name> reviewer approval` → `- [x] <Tier-name> reviewer approval`. The exact line your edit must produce is the one that `.sad/scripts/check-tier-approvals.{sh,ps1}` recognizes (case-insensitive match on `^- *\[x\].*<tier>.*reviewer`).
+1. Tick the matching approval checkbox in `walkthroughs/<tier>.md`. Set **Approval status** to `approved`. The line shape is `- [ ] <Tier-name> reviewer:` → `- [x] <Tier-name> reviewer:` with name and date.
 2. Run `check-tier-approvals.{sh,ps1}` on `specs/<slug>/` to confirm. If all three pass, update state to `walkthrough-approved` and (only if the user said so) re-invoke `/sad-next` to continue.
 
 For `changes`, prompt the user for the requested change, record it under "Recent decisions" in the state file, and stop. The user fixes the artifact and re-invokes `/sad-next` later.

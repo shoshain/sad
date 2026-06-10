@@ -8,24 +8,32 @@ PROJECT-LEVEL (run once)
   2. /sad-constitution   produce .sad/memory/constitution.md + tier definitions
 
 PER-FEATURE LOOP
-  3. /sad-brainstorm     interactive Q&A → right-sized requirements
-  4. /sad-specify        feature.spec.md (EARS criteria, capabilities)
+  3. /sad-brainstorm     interactive Q&A → requirements + intent-size triage (trivial/bounded/strategic)
+  4. /sad-specify        feature.intent.md + feature.spec.md (layer split)
   5. /sad-clarify        resolve ambiguities; iterate spec
   6. /sad-impact-forecast predict downstream effects on spec registry + lessons    [NOVEL]
+  6b./sad-context        context bundle (mandatory for strategic triage)             [NOVEL]
   7. /sad-plan           feature.plan.md + data-model + contracts + research
   8. /sad-walkthrough    generate three tier-specific artifacts                    [NOVEL]
                          ├── walkthroughs/non-technical.md
                          ├── walkthroughs/semi-technical.md
                          └── walkthroughs/technical.md
-                         GATE: tier-routed approval (all three required to proceed)
+                         GATE: tier-routed approval (approved or pending-async; all three required)
   9. /sad-analyze        consistency check vs constitution (read-only quality gate)
  10. /sad-tasks          tasks.md with [P] parallel-safe tags
- 11. /sad-implement      sub-agent dispatch per task; isolated context per task
+ 11. /sad-implement      sub-agent dispatch; presence checkpoints during build
  12. /sad-review         parallel reviewer fleet (code + doc + tier reviewers)
  13. /sad-reconcile      bidirectional spec/code diff; produce reconciliation.md   [NOVEL]
  14. /sad-compound       lessons → AGENTS.md + .sad/memory/lessons/
 
-BACKGROUND (scheduled)
+TRIAGE SHORTCUT (trivial — recorded in intent-size-triage.md)
+  brainstorm → specify → implement → reconcile → compound
+  (skips clarify, forecast, context, plan, walkthrough, analyze, tasks, review)
+
+MAINTENANCE (any time)
+   /sad-gate-status      program-level approval queue across specs/
+   /sad-stakeholder-report  async review packets for unavailable tiers
+   /sad-doctor           health + spec-theater detector + substrate diagnostic
    /sad-spec-drift-scan  scheduled drift detection across all features
    /sad-compound-refresh prune stale lessons, archive obsolete decisions
    /sad-evolve-evals     fold new failure modes into eval suites
@@ -44,11 +52,12 @@ See [commands/sad-requirements-progress.md](commands/sad-requirements-progress.m
 
 | Phase | Inputs | Outputs | Gate | Approver |
 |-------|--------|---------|------|----------|
-| Brainstorm | feature idea | `requirements.draft.md` | informal | feature owner |
-| Specify | requirements | `feature.spec.md` (EARS) | spec review | non-technical reviewer |
-| Clarify | spec | revised spec | iteration | non-technical reviewer |
+| Brainstorm | feature idea | `requirements.draft.md`, `intent-size-triage.md` | informal | feature owner |
+| Specify | requirements | `feature.intent.md`, `feature.spec.md` (EARS) | spec review | non-technical reviewer |
+| Clarify | spec | revised spec + intent | iteration | non-technical reviewer |
 | Impact-Forecast | spec | `impact-forecast.md` | informational | semi-technical reviewer |
-| Plan | spec + forecast | `feature.plan.md`, `data-model.md`, `contracts/`, `research.md` | plan review | semi-technical reviewer |
+| Context | intent + forecast + lessons | `context.md` | advisory (mandatory if strategic) | semi-technical reviewer |
+| Plan | spec + forecast + context | `feature.plan.md`, `data-model.md`, `contracts/`, `research.md` | plan review | semi-technical reviewer |
 | Walkthrough | spec + plan | three tier walkthroughs | TIER-ROUTED APPROVAL | one approver per tier |
 | Analyze | spec + plan + tasks | analysis report | consistency gate | automated, advisory |
 | Tasks | plan | `tasks.md` | none | none |

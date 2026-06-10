@@ -95,6 +95,9 @@ if [[ -d "${SPECS}" ]]; then
     else
       record "feature.${name}.artifacts" "green" "${name} has all required artifacts"
     fi
+    if [[ ! -f "${fdir}/feature.intent.md" ]]; then
+      record "feature.${name}.intent" "yellow" "${name} has no feature.intent.md (P4-1 layer split)" "Run /sad-specify to split intent from spec"
+    fi
   done < <(find "${SPECS}" -mindepth 1 -maxdepth 1 -type d -print0)
 else
   record "features.any" "yellow" "specs/ directory missing" "Create at project root; convention specs/<NNN>-<slug>/"
@@ -106,6 +109,13 @@ if [[ "${SH_COUNT}" -ge 4 ]]; then
   record "scripts.platform" "green" "Bash scripts present (POSIX-ready)"
 else
   record "scripts.platform" "yellow" "Only ${SH_COUNT} .sh scripts found; expected at least 4"
+fi
+
+# Extended: spec-theater detector + substrate diagnostic
+if [[ -f "${ROOT}/.sad/scripts/_sad-doctor-extended.sh" ]]; then
+  # shellcheck source=_sad-doctor-extended.sh
+  source "${ROOT}/.sad/scripts/_sad-doctor-extended.sh"
+  _sad_doctor_extended "${ROOT}"
 fi
 
 json_escape() {

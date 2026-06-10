@@ -22,7 +22,7 @@ $root      = Resolve-Path (Join-Path $scriptDir '..\..')
 $feat      = Join-Path $root "specs\$Prefix-$slug"
 $tpl       = Join-Path $root '.sad\templates'
 
-foreach ($sub in @('walkthroughs','demo','stories','evals','contracts')) {
+foreach ($sub in @('walkthroughs','demo','stories','evals','contracts','reports','checkpoints')) {
     New-Item -ItemType Directory -Path (Join-Path $feat $sub) -Force | Out-Null
 }
 
@@ -50,6 +50,9 @@ Copy-Template 'requirements.draft.md'            (Join-Path $feat 'requirements.
 Copy-Template 'data-model.md'                    (Join-Path $feat 'data-model.md')
 Copy-Template 'research.md'                      (Join-Path $feat 'research.md')
 Copy-Template 'analysis.md'                      (Join-Path $feat 'analysis.md')
+Copy-Template 'feature.intent.md'               (Join-Path $feat 'feature.intent.md')
+Copy-Template 'context.md'                      (Join-Path $feat 'context.md')
+Copy-Template 'intent-size-triage.md'           (Join-Path $feat 'intent-size-triage.md')
 Copy-Template 'walkthrough-non-technical.md'     (Join-Path $feat 'walkthroughs\non-technical.md')
 Copy-Template 'walkthrough-semi-technical.md'    (Join-Path $feat 'walkthroughs\semi-technical.md')
 Copy-Template 'walkthrough-technical.md'         (Join-Path $feat 'walkthroughs\technical.md')

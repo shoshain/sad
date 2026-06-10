@@ -18,7 +18,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 feat="${root}/specs/${prefix}-${slug}"
 tpl="${root}/.sad/templates"
 
-mkdir -p "${feat}/walkthroughs" "${feat}/demo" "${feat}/stories" "${feat}/evals" "${feat}/contracts"
+mkdir -p "${feat}/walkthroughs" "${feat}/demo" "${feat}/stories" "${feat}/evals" "${feat}/contracts" "${feat}/reports" "${feat}/checkpoints"
 
 # Drop a starter contract example so the contracts/ folder is not empty on day one.
 if [[ -f "${tpl}/contracts/example.md" ]]; then
@@ -45,6 +45,9 @@ copy_tpl "requirements.draft.md" "${feat}/requirements.draft.md"
 copy_tpl "data-model.md" "${feat}/data-model.md"
 copy_tpl "research.md" "${feat}/research.md"
 copy_tpl "analysis.md" "${feat}/analysis.md"
+copy_tpl "feature.intent.md" "${feat}/feature.intent.md"
+copy_tpl "context.md" "${feat}/context.md"
+copy_tpl "intent-size-triage.md" "${feat}/intent-size-triage.md"
 copy_tpl "walkthrough-non-technical.md" "${feat}/walkthroughs/non-technical.md"
 copy_tpl "walkthrough-semi-technical.md" "${feat}/walkthroughs/semi-technical.md"
 copy_tpl "walkthrough-technical.md" "${feat}/walkthroughs/technical.md"

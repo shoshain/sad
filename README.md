@@ -33,7 +33,8 @@ SAD is an operational synthesis. Where a primitive is borrowed from a prior meth
 | [`NOVEL.md`](NOVEL.md) | What SAD adds beyond its sources |
 | [`GLOSSARY.md`](GLOSSARY.md) | Terminology |
 | [`TELEMETRY.md`](TELEMETRY.md) | What `--telemetry on` does (writes a local file; no upload) |
-| [`ROADMAP.md`](ROADMAP.md) | Gaps vs the website and the plan to close them |
+| [`COMPOSITION.md`](COMPOSITION.md) | How SAD composes with FTM, TAO, AIM |
+| [`ROADMAP.md`](ROADMAP.md) | Gaps vs the website (P0–P4 status) |
 | [sad-test-repo `testing_sad.md`](https://github.com/shoshain/sad-test-repo/blob/main/testing_sad.md) | End-to-end kit validation (companion sandbox, not this repo) |
 
 ## Repository layout

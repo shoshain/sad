@@ -20,6 +20,7 @@
 3. **Production access is need-to-know.** Engineering access to production data requires a documented request, a documented grant, a time-limited window, and an audit trail.
 4. **Incident response is rehearsed, not improvised.** Tabletop exercises happen at the regulatory cadence (default: quarterly).
 5. **The constitution itself is part of the audit surface.** Every amendment is a change-controlled event with its own author + reviewer + approver trio and a regulatory-impact statement.
+6. **Presence in the loop, not approval at the gate only.** Intent owners stay engaged during `/sad-implement` via recorded checkpoints; tier gates and separation of duties are not weakened.
 
 ## Architecture Boundaries
 
@@ -49,6 +50,9 @@ Constitution amendments require: lead engineer + compliance officer + (for any A
 | A6 | Sub-processor management |
 | A7 | Data-class catalogue and geography controls |
 | A8 | Regulatory-clause traceability (every change cites the affected clause) |
+| A9 | Presence in the loop during `/sad-implement` (checkpoints; gates remain mandatory) |
+| A10 | Tier-routed walkthrough gate (three artifacts; pending-async allowed, not fake approval) |
+| A11 | Deferred approval discipline (pending blocks tasks; external acceptance records allowed) |
 
 ## Tensions to resolve
 

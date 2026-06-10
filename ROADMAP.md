@@ -148,54 +148,41 @@ Severity tags: **P0** (site implies it works today), **P1** (advertised optional
 
 ---
 
-## P4 — Forward-looking: intent-driven substrate (post-v0.1)
+## P4 — Forward-looking: intent-driven substrate (landed 2026-06)
 
-> **Source:** Kapil Viren Ahuja, *"Spec-Driven Development Isn't Broken. It will collapse."* (May 2026). The article argues that SDD failures trace to a single root cause — one document carrying three layers (intent / spec / implementation). SAD already separates the *audience* dimension (three tiers) and the *time* dimension (`/sad-reconcile`), but still collapses the *layer* dimension inside `feature.spec.md` + `feature.plan.md`. These five items operationalize the layer split and push SAD from Level 2.5 toward Level 3 on Ahuja's substrate stack.
+> **Source:** Kapil Viren Ahuja, *"Spec-Driven Development Isn't Broken. It will collapse."* (May 2026).
 
-### P4-1. Split `feature.spec.md` into `feature.intent.md` + `feature.spec.md`
+### ✅ P4-1. Split `feature.spec.md` into `feature.intent.md` + `feature.spec.md`
 
-- **Today:** `feature.spec.md` jams **intent** (goals, NFRs, scale, success/failure conditions) and **spec** (EARS criteria, contracts) into one artifact. `feature.plan.md` then jams non-functional reasoning (still intent-shaped) with architecture choice (system-owned).
-- **Change:**
-  - `feature.intent.md` — goals, constraints (scale, latency, compliance posture), success/failure conditions, NFRs that drive architecture. NT-owned. New template under `.sad/templates/`.
-  - `feature.spec.md` — narrows to what's convertible to an eval. Test-shaped. Every line must be EARS-form or contract-shaped.
-  - `feature.plan.md` — stays system-owned (architecture chosen against intent + lessons).
-  - `/sad-analyze` gains a rule: flag any implementation noun ("microservice", "queue", "lambda") that appears in `intent.md` or `spec.md`. That's Ahuja's "pre-locked architecture in the spec" leak.
-- **Touches:** `.sad/templates/feature.intent.md` (new), `.sad/templates/feature.spec.md` (revise), `commands/sad-specify.md`, `commands/sad-clarify.md`, `commands/sad-analyze.md`, `.sad/scripts/create-feature.{sh,ps1}`.
+- **Shipped:** [`.sad/templates/feature.intent.md`](.sad/templates/feature.intent.md), revised [`feature.spec.md`](.sad/templates/feature.spec.md), updated [`commands/sad-specify.md`](commands/sad-specify.md), `create-feature.{sh,ps1}` scaffolds intent.
 
-### P4-2. Promote Context to a numbered phase: `/sad-context` between impact-forecast and plan
+### ✅ P4-2. Promote Context to `/sad-context` between impact-forecast and plan
 
-- **Today:** Lessons (`.sad/memory/lessons/`) and prior reconciliation verdicts are read at compound-time, not at plan-time. `/sad-impact-forecast` consults the lessons store but its output is forecast-shaped, not context-bundle-shaped.
-- **Change:** Insert `/sad-context` as step 6.5. It reads (a) lessons relevant to the intent's domain, (b) prior reconciliation verdicts on overlapping contract surfaces, (c) constitution articles the intent triggers, and emits `context.md` — a citation-bearing decision-support bundle the plan phase consumes. This is Ahuja's "Context Crafting" craft made operational. Without it, `/sad-plan` is architect guesswork; with it, the system has empirical memory at the moment of architectural choice.
-- **Touches:** `commands/sad-context.md` (new), `.sad/templates/context.md` (new), `LIFECYCLE.md` (renumber), `CHEATSHEET.md` (mermaid + table), `commands/sad-plan.md` (add context.md as input).
+- **Shipped:** [`commands/sad-context.md`](commands/sad-context.md), [`.sad/templates/context.md`](.sad/templates/context.md), `next-step.{sh,ps1}` routes strategic triage through context phase, [`LIFECYCLE.md`](LIFECYCLE.md) updated.
 
-### P4-3. Extend drift detection to intent↔spec (not just code↔spec)
+### ✅ P4-3. Extend drift detection to intent↔spec (preview in analyze + reconciliation verdicts)
 
-- **Today:** `/sad-reconcile` and `/sad-spec-drift-scan` check code↔spec. Ahuja's "system woke up on a different date with no memory of where it was standing" is exactly an intent-drift failure that code-vs-spec reconciliation cannot catch.
-- **Change:** Add intent↔spec checks: has the spec acquired EARS criteria that don't trace to an intent constraint? Has an intent constraint vanished from the spec without an explicit `intent-update` verdict? New verdict types: `intent-update`, `spec-tightening`, `intent-orphan`. Surfaced in `reconciliation.md` and `drift-report.md`.
-- **Touches:** `agents/reconciliation/spec-drift-detector.md`, `commands/sad-reconcile.md`, `commands/sad-spec-drift-scan.md`, `.sad/templates/reconciliation.md`.
+- **Shipped:** [`commands/sad-analyze.md`](commands/sad-analyze.md) intent leak checks; [`reconciliation.md`](.sad/templates/reconciliation.md) verdict types `intent-update`, `spec-tightening`, `intent-orphan`.
 
-### P4-4. Right-size at the front door (the Ira case)
+### ✅ P4-4. Right-size at the front door (intent-size triage)
 
-- **Today:** SAD runs the full 14-step loop for everything. Ahuja's Ira story is exactly the SAD failure mode for a 5-minute bug fix: methodology tax on small work, vibe rebellion follows.
-- **Change:** Add an intent-size triage as `/sad-brainstorm`'s first move (or `/sad-next`'s gating call):
-  - **Trivial** (bug fix, copy change, dep bump): collapse to intent → implement → reconcile. Single-tier (T) approval. Auto-fill commit envelope so audit trail survives.
-  - **Bounded** (feature ≤ 1 contract surface, no NFR shift): standard 14-step.
-  - **Strategic** (new contract, NFR shift, cross-tier change): standard + mandatory `/sad-context` + adversarial pre-mortem.
-- **Touches:** `commands/sad-brainstorm.md` (add triage), `commands/sad-next.md` (route by size), new `.sad/templates/intent-size-triage.md`, `CHEATSHEET.md` (document the three paths).
+- **Shipped:** [`.sad/templates/intent-size-triage.md`](.sad/templates/intent-size-triage.md), [`commands/sad-brainstorm.md`](commands/sad-brainstorm.md), `next-step.{sh,ps1}` trivial/strategic routing.
 
-### P4-5. Substrate diagnostic in `/sad-doctor`
+### ✅ P4-5. Substrate diagnostic in `/sad-doctor`
 
-- **Today:** Doctor is green/yellow/red on artifacts. Maturity-report.{sh,ps1} reports graduation-readiness counters. Neither tells a team whether their *substrate* matches the maturity level they claim. Ahuja's Confession #2 — "we're at Level 2.5, not Level 3" — is exactly this honesty gap made measurable.
-- **Change:** Add a substrate readout to `/sad-doctor`:
-  - Lessons-store depth: count, last refresh date, citation rate at plan-time (how many plans actually cite a lesson).
-  - Reconciliation verdict distribution: `code-update` vs `spec-update` vs `intent-update` ratio — drift signal.
-  - Eval coverage trendline: pass rate over last N runs.
-  - Output: "claimed Level N / substrate suggests Level M, gap: {reasons}."
-- **Touches:** `.sad/scripts/doctor.{sh,ps1}`, `.sad/scripts/maturity-report.{sh,ps1}` (cross-reference), `commands/sad-doctor.md` (new section in the spec).
+- **Shipped:** [`.sad/scripts/_sad-doctor-extended.{sh,ps1}`](.sad/scripts/_sad-doctor-extended.sh) — theater + substrate checks; [`commands/sad-doctor.md`](commands/sad-doctor.md) documents new rows.
 
-### P4 — what compounds first
+### ✅ P4-6. Async stakeholder + gate queue (from field experience)
 
-P4-1 and P4-2 are load-bearing — everything else gets cheaper once the layer split exists and context is a phase. P4-3 only makes sense after P4-1 (you need a separate intent artifact to drift against). P4-4 and P4-5 are independent and can land in any order.
+- **Shipped:** deferred approval block on walkthrough templates; [`commands/sad-stakeholder-report.md`](commands/sad-stakeholder-report.md); [`commands/sad-gate-status.md`](commands/sad-gate-status.md); [`gate-status.{sh,ps1}`](.sad/scripts/gate-status.sh); updated [`check-tier-approvals.{sh,ps1}`](.sad/scripts/check-tier-approvals.sh).
+
+### ✅ P4-7. Presence in the loop (Article A11)
+
+- **Shipped:** [`.sad/templates/checkpoint.md`](.sad/templates/checkpoint.md), [`commands/sad-implement.md`](commands/sad-implement.md), [`MATURITY.md`](MATURITY.md), regulated constitution starter articles A9–A11.
+
+### ✅ P4-8. FTM composition narrative
+
+- **Shipped:** [`COMPOSITION.md`](COMPOSITION.md).
 
 ---
 
@@ -218,7 +205,8 @@ Both are five-line edits in the website repo; flagged here for ownership trackin
 | P1 | 5 / 5 | 0 |
 | P2 | 6 / 7 (P2-2 is site-side) | 1 (P2-2, website edit) |
 | P3 | 4 / 5 | 1 (P3-5, needs hosted badge endpoint) |
+| P4 | 8 / 8 | 0 |
 | Cleanups | 5 / 5 | 0 |
-| **Total** | **25 / 27** | **2** (both require work outside this repo) |
+| **Total** | **33 / 35** | **2** (both require work outside this repo) |
 
 Every promise the site's lifecycle + demo screens make about per-feature artifacts, the install footprint, the eval harness, and the maturity ladder is now backed by a real file in this repo.

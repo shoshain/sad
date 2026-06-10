@@ -27,13 +27,20 @@ You are invoking **`/sad-doctor`** — a 30-second project-wide health check tha
 | Group | Check | Red means | Yellow means | Green means |
 |---|---|---|---|---|
 | constitution | `exists` | `.sad/memory/constitution.md` missing | — | file present |
-| constitution | `identity` | `[name]` / `[who]` placeholders unfilled | — | identity filled |
+| constitution | `identity` | `[name]` / `[who]` placeholders unfilled | unmodified template | identity filled |
 | constitution | `articles` | — | article index empty (A1, A2 ...) | ≥ 1 article |
 | constitution | `maturity` | no `Maturity level` line | — | maturity declared |
 | stakeholders | `non-technical`, `semi-technical`, `technical` | file missing | "TBD" / `[List people` placeholders | named reviewers |
 | hooks | `present` | — | `hooks/` directory missing | hook descriptors found |
 | features | `any` | — | `specs/` empty or missing | at least one feature directory |
 | features | `<name>.artifacts` | — | feature missing one of the seven required artifacts | all seven present |
+| features | `<name>.intent` | — | no `feature.intent.md` (P4-1 split) | intent file present |
+| gates | `<name>.<tier>.stale_pending` | — | pending approval older than threshold | — |
+| theater | `<name>.collapse_*` | — | walkthrough tiers >70% text overlap | — |
+| theater | `stakeholders.*_tbd` | — | features exist but stakeholder file still TBD | — |
+| substrate | `lessons_shallow` | — | claimed Level 3+ with <3 lessons | — |
+| substrate | `reconcile_drift` | — | many code-update vs few spec-update verdicts | — |
+| substrate | `standin_calibration` | — | Level 0 without calibration line | — |
 | scripts | `platform` | — | < 4 platform-specific scripts | full script set installed |
 
 ## Discipline
@@ -55,3 +62,5 @@ You are invoking **`/sad-doctor`** — a 30-second project-wide health check tha
 - Before merging a feature, to catch missing artifacts before review.
 - In CI, as the first job of the `sad-checks` workflow.
 - Whenever the user is unsure "did I configure this right?".
+- After marking walkthroughs **pending** — verify theater/substrate signals before chasing stakeholders.
+- Weekly alongside `/sad-gate-status` on multi-feature programs.

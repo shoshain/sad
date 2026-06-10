@@ -107,6 +107,9 @@ if (Test-Path $specsDir) {
         } else {
             Add-Check "feature.$($f.Name).artifacts" 'green' "$($f.Name) has all required artifacts" ''
         }
+        if (-not (Test-Path (Join-Path $f.FullName 'feature.intent.md'))) {
+            Add-Check "feature.$($f.Name).intent" 'yellow' "$($f.Name) has no feature.intent.md (P4-1 layer split)" 'Run /sad-specify to split intent from spec'
+        }
     }
 } else {
     Add-Check 'features.any' 'yellow' 'specs/ directory missing' 'Create at the project root; convention: specs/<NNN>-<slug>/'
@@ -128,6 +131,13 @@ if ($IsWindows -or [Environment]::OSVersion.Platform -eq 'Win32NT') {
     } else {
         Add-Check 'scripts.platform' 'yellow' "Only $($shScripts.Count) .sh scripts found; expected at least 4" ''
     }
+}
+
+# Extended: spec-theater detector + substrate diagnostic
+$ext = Join-Path $root '.sad\scripts\_sad-doctor-extended.ps1'
+if (Test-Path $ext) {
+    . $ext
+    Invoke-SadDoctorExtended -Root $root -Results $results
 }
 
 # --- Output ---

@@ -40,3 +40,19 @@ Furuholt's three-pillar enterprise-architecture frame is reapplied at the featur
 ## 8. Composition Itself
 
 SAD's repository structure and lifecycle are the integration. We do not claim any individual primitive listed in `ATTRIBUTION.md` as our own. We claim the specific composition (which primitives compose with which, in what order, with what gates), the audience-tiered routing layer, the explicit `Reconcile` phase, and the predictive impact-forecast primitive. The synthesis is the contribution.
+
+## 9. Deferred Approval Protocol (async stakeholder workflow)
+
+No prior spec-driven methodology in the SAD survey treats **stakeholder unavailability** as a first-class gate state. SAD adds an explicit **pending** approval status on walkthrough artifacts: packets can be prepared, queued, and tracked while still blocking `/sad-tasks` until a named human approves. See `commands/sad-stakeholder-report.md` and `commands/sad-gate-status.md`.
+
+## 10. Program Gate Rollup (`/sad-gate-status`)
+
+REQ traceability rollups answer "which requirements are covered?" `/sad-gate-status` answers "which features block on which tier?" — the operational question when review bandwidth is the binding constraint.
+
+## 11. Spec-Theater Detector (substrate honesty in `/sad-doctor`)
+
+SAD names spec theatre and single-tier collapse as anti-patterns; `/sad-doctor` now detects overlap across walkthrough tiers, stale pending approvals, shallow lesson stores vs claimed maturity, and reconciliation skew. See `.sad/scripts/_sad-doctor-extended.{sh,ps1}`.
+
+## 12. Intent / Context Layer Split (Ahuja substrate)
+
+`feature.intent.md` separates goals and constraints from test-shaped `feature.spec.md`. `/sad-context` materializes empirical memory before `/sad-plan`. `/sad-brainstorm` records **trivial / bounded / strategic** triage so ceremony matches risk. See `ROADMAP.md` P4 (landed).

@@ -18,9 +18,10 @@
 | `brainstorm` | brainstorm complete | `/sad-specify` |
 | `specify` | spec drafted | `/sad-clarify` |
 | `clarify` | spec stable | `/sad-impact-forecast` |
-| `impact-forecast` | forecast written | `/sad-plan` |
+| `impact-forecast` | forecast written | `/sad-context` (strategic) or `/sad-plan` |
+| `context` | context bundle written | `/sad-plan` |
 | `plan` | plan written | `/sad-walkthrough` |
-| `walkthrough` | three walkthroughs written, awaiting tier approvals | **GATE — conductor pauses, surfaces approval prompts inline** |
+| `walkthrough` | three walkthroughs written, awaiting tier approvals (approved or pending-async) | **GATE — conductor pauses, surfaces approval prompts inline** |
 | `walkthrough-approved` | all three checkboxes ticked | `/sad-analyze` |
 | `analyze` | analysis complete | `/sad-tasks` |
 | `tasks` | task list written | `/sad-implement` |

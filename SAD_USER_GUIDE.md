@@ -1215,7 +1215,8 @@ If you wired Pattern E from [section 8.6](#86-six-generic-integration-patterns),
 
 Read this section before your first feature. Each item is a real failure mode SAD's structure is designed to prevent — but the structure only helps if you do not skip it.
 
-- **Spec theatre.** Producing specs and walkthroughs that nobody actually reads. The fix is the tier-routed gate: if a tier is not reviewing, that tier is missing.
+- **Spec theatre.** Producing specs and walkthroughs that nobody actually reads. The fix is the tier-routed gate: if a tier is not reviewing, that tier is missing. Run `/sad-doctor` — theater checks flag single-tier collapse.
+- **Fake approval via pending forever.** Setting `Approval status: pending` without sending a review packet. The fix: `/sad-stakeholder-report` + `/sad-gate-status`; pending still blocks `/sad-tasks` until a human ticks `[x]`.
 - **Single-tier collapse.** Treating the three tiers as one undifferentiated "stakeholder". The fix is to populate the three stakeholder files with real (different) names, even if some are placeholders today.
 - **Lesson rot.** Lessons accumulate without curation; the lesson store becomes an unsearchable junkyard. The fix is `/sad-compound-refresh` on a real cadence.
 - **Premature Level 3.** Adopting auto-approval before the eval suites are calibrated. The fix is the maturity ladder's four diagnostic questions.

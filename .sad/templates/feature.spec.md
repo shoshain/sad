@@ -3,9 +3,10 @@
 **Stage:** spec-first / spec-anchored / spec-as-source (per Tessl maturity ladder)
 **Tier audience:** non-technical reviewer
 **Status:** draft / in-clarification / approved / superseded
+**Intent source:** `feature.intent.md` (when present — goals and constraints live there)
 
 ## 1. Business Intent
-One paragraph. What user problem does this feature solve? Who is the user? What outcome do they get?
+One paragraph summarizing `feature.intent.md` §Goals. Do not duplicate full intent prose here.
 
 ## 2. Capabilities
 List capabilities the feature provides. Each capability links to its acceptance criteria below and (later) to its eval cases.

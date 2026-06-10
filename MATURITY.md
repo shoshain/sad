@@ -14,6 +14,7 @@ Not every team needs Level 5. Pick a level that matches your trust, tooling, and
 - **Use when:** solo developer; OSS maintainer with no co-maintainers reviewing each PR; weekend project; pre-PMF startup with one engineer.
 - **Trade-off you accept:** Level 0 trades the Virk & Liu *multi-reviewer protection* for the Virk & Liu *artifact-discipline protection* (which is the larger of the two — arXiv 2508.06484 §4). You must be explicit about this in your constitution under Identity. If your domain is regulated or safety-critical, **do not use Level 0**; start at Level 1.
 - **Graduation to Level 1** is automatic the moment a second named reviewer joins any tier. No formal criteria apply.
+- **Presence in the loop (Article A11):** at Level 1+, record `checkpoints/` during `/sad-implement` when intent owners cannot pair live. Presence complements gates; it does not replace them.
 
 ### Level 1: AI-Assisted Drafting
 - AI assists humans in drafting `feature.spec.md`, `feature.plan.md`.

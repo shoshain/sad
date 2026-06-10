@@ -27,6 +27,9 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 STATE="${ROOT}/.sad/state/sad-state.md"
 CONST="${ROOT}/.sad/memory/constitution.md"
 SPECS="${ROOT}/specs"
+LIB="$(dirname "$0")/_sad-approval-lib.sh"
+# shellcheck source=_sad-approval-lib.sh
+source "${LIB}" 2>/dev/null || true
 
 JSON=0
 QUIET=0
@@ -84,6 +87,15 @@ if [[ -f "${STATE}" ]]; then
 fi
 PHASE="$(echo "${PHASE}" | tr '[:upper:]' '[:lower:]')"
 
+FEAT_DIR=""
+if [[ -n "${SLUG}" && -d "${SPECS}/${SLUG}" ]]; then
+  FEAT_DIR="${SPECS}/${SLUG}"
+fi
+TRIAGE="bounded"
+if [[ -n "${FEAT_DIR}" ]] && type _sad_read_triage_size &>/dev/null; then
+  TRIAGE="$(_sad_read_triage_size "${FEAT_DIR}")"
+fi
+
 # 3. Phase → next-command lookup, plus gate detection
 case "${PHASE}" in
   none|"")
@@ -95,10 +107,19 @@ case "${PHASE}" in
     ;;
   setup-needed)        emit setup "/sad-setup"             "${SLUG}" "setup not yet run" 3;;
   constitution-needed) emit setup "/sad-constitution"      "${SLUG}" "constitution not yet filled" 3;;
-  brainstorm)          emit run   "/sad-specify"           "${SLUG}" "brainstorm complete" 0;;
-  specify)             emit run   "/sad-clarify"           "${SLUG}" "spec drafted" 0;;
+  brainstorm)          emit run   "/sad-specify"           "${SLUG}" "brainstorm complete (triage: ${TRIAGE})" 0;;
+  specify)
+    if [[ "${TRIAGE}" == "trivial" ]]; then
+      emit run "/sad-implement" "${SLUG}" "trivial triage — skipping clarify/plan/walkthrough" 0
+    fi
+    emit run "/sad-clarify" "${SLUG}" "spec drafted" 0;;
   clarify)             emit run   "/sad-impact-forecast"   "${SLUG}" "spec stable" 0;;
-  impact-forecast)     emit run   "/sad-plan"              "${SLUG}" "impact forecast written" 0;;
+  impact-forecast)
+    if [[ "${TRIAGE}" == "strategic" ]]; then
+      emit run "/sad-context" "${SLUG}" "strategic triage — context bundle required before plan" 0
+    fi
+    emit run "/sad-plan" "${SLUG}" "impact forecast written" 0;;
+  context)             emit run   "/sad-plan"              "${SLUG}" "context bundle written" 0;;
   plan)                emit run   "/sad-walkthrough"       "${SLUG}" "plan written" 0;;
   walkthrough)
     # Check tier approvals — if all three are ticked, advance to walkthrough-approved.
@@ -111,7 +132,11 @@ case "${PHASE}" in
   walkthrough-approved) emit run "/sad-analyze"    "${SLUG}" "walkthroughs approved" 0;;
   analyze)              emit run "/sad-tasks"      "${SLUG}" "analysis complete" 0;;
   tasks)                emit run "/sad-implement"  "${SLUG}" "task list written" 0;;
-  implement)            emit run "/sad-review"     "${SLUG}" "implementation complete" 0;;
+  implement)
+    if [[ "${TRIAGE}" == "trivial" ]]; then
+      emit run "/sad-reconcile" "${SLUG}" "trivial triage — skipping reviewer fleet" 0
+    fi
+    emit run "/sad-review" "${SLUG}" "implementation complete" 0;;
   review)               emit run "/sad-reconcile"  "${SLUG}" "reviewer fleet finished" 0;;
   reconcile)            emit gate "reconcile"      "${SLUG}" "awaiting semi-technical sign-off on reconciliation verdicts" 2;;
   reconcile-approved)   emit run "/sad-compound"   "${SLUG}" "reconciliation approved" 0;;

@@ -45,4 +45,14 @@ Dispatch three sub-agents in parallel, each producing one tier's walkthrough fil
 - Flag deviations from `feature.plan.md`.
 
 ## After writing
-Block on tier-routed approval. Check each walkthrough file for the approval checkbox. Do not advance to /sad-tasks until all three are checked.
+
+Block on tier-routed approval. All three tiers must reach **approved** (checkbox `[x]`,
+**Approval status: approved**) before `/sad-tasks`.
+
+When a reviewer is unavailable synchronously:
+
+1. Run `/sad-stakeholder-report --tier <tier>` to write `reports/<tier>-packet-vN.md`.
+2. Set **Approval status: pending**, **Prepared for**, **Pending since**, **Review packet** on that walkthrough.
+3. Run `/sad-gate-status` so program owners see the queue.
+
+**Pending is not approval** — it blocks `/sad-tasks` until the human returns.

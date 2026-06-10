@@ -34,5 +34,13 @@ sequenceDiagram
 - …
 
 ## Approval
+
+Use **approved** only after a named human has reviewed. Use **pending** for async
+packets — pending still blocks `/sad-tasks`.
+
 - [ ] Semi-technical reviewer: <name>, <date>
+- **Approval status:** pending | approved
+- **Prepared for:** <delegate name or role>
+- **Pending since:** <YYYY-MM-DD>
+- **Review packet:** reports/semi-technical-packet-v1.md
 - Comments:

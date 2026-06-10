@@ -9,6 +9,7 @@ flowchart TD
     specify["4 /sad-specify"]
     clarify["5 /sad-clarify"]
     forecast["6 /sad-impact-forecast"]
+    context["6b /sad-context (strategic)"]
     plan["7 /sad-plan"]
     walk["8 /sad-walkthrough"]
     gate{{"TIER-ROUTED GATE<br/>all three approvals required"}}
@@ -20,7 +21,11 @@ flowchart TD
     comp["14 /sad-compound"]
     doc["/sad-doctor (any time)"]
 
-    setup --> brainstorm --> specify --> clarify --> forecast --> plan --> walk --> gate
+    setup --> brainstorm --> specify --> clarify --> forecast
+    forecast --> context
+    forecast --> plan
+    context --> plan
+    plan --> walk --> gate
     gate -->|approved| analyze --> tasks --> impl --> review --> rec --> comp
     gate -->|NT rejects| clarify
     gate -->|ST/T rejects| plan
@@ -33,10 +38,11 @@ flowchart TD
 |---|---|---|---|---|
 | 1 | `/sad-setup` | `.sad/`, `AGENTS.md` | — | `/sad-constitution` |
 | 2 | `/sad-constitution` | `.sad/memory/constitution.md` | constitution amendment process | `/sad-brainstorm` |
-| 3 | `/sad-brainstorm` | `requirements.draft.md` (optional) | feature owner | `/sad-specify` |
-| 4 | `/sad-specify` | `feature.spec.md` | non-technical | `/sad-clarify` |
-| 5 | `/sad-clarify` | revised `feature.spec.md` | non-technical | `/sad-impact-forecast` |
-| 6 | `/sad-impact-forecast` | `impact-forecast.md` | semi-technical (advisory) | `/sad-plan` |
+| 3 | `/sad-brainstorm` | `requirements.draft.md`, `intent-size-triage.md` | feature owner | `/sad-specify` |
+| 4 | `/sad-specify` | `feature.intent.md`, `feature.spec.md` | non-technical | `/sad-clarify` |
+| 5 | `/sad-clarify` | revised spec + intent | non-technical | `/sad-impact-forecast` |
+| 6 | `/sad-impact-forecast` | `impact-forecast.md` | semi-technical (advisory) | `/sad-context` or `/sad-plan` |
+| 6b | `/sad-context` | `context.md` | semi-technical (advisory) | `/sad-plan` |
 | 7 | `/sad-plan` | `feature.plan.md`, `data-model.md`, `contracts/` | semi-technical | `/sad-walkthrough` |
 | 8 | `/sad-walkthrough` | three `walkthroughs/*.md` | **all three tiers** | `/sad-analyze` |
 | 9 | `/sad-analyze` | findings (advisory) | — | `/sad-tasks` |
@@ -46,6 +52,8 @@ flowchart TD
 | 13 | `/sad-reconcile` | `reconciliation.md` (verdicts) | semi-technical | `/sad-compound` |
 | 14 | `/sad-compound` | `.sad/memory/lessons/*.md` | — | (next feature) |
 | — | `/sad-next` | (the conductor — runs whichever of 1–14 is next, stops at human gates) | — | re-invoke until done |
+| — | `/sad-gate-status` | program approval queue | — | pair with stakeholder-report |
+| — | `/sad-stakeholder-report` | async tier review packet | tier reviewer (async) | then walkthrough approve |
 
 ## Effort split (Compound Engineering default)
 

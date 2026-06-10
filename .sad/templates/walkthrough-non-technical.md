@@ -33,5 +33,14 @@ For each EARS criterion in `feature.spec.md`, we show evidence of coverage.
 What this feature does *not* affect, and why we want you to know that.
 
 ## Approval
+
+Use **approved** only after a named human (or external acceptance record per
+`ROLES.md`) has reviewed this tier's artifact. Use **pending** when the packet is
+prepared for async review — pending still blocks `/sad-tasks`.
+
 - [ ] Non-technical reviewer: <name>, <date>
+- **Approval status:** pending | approved
+- **Prepared for:** <delegate name or role>
+- **Pending since:** <YYYY-MM-DD>
+- **Review packet:** reports/non-technical-packet-v1.md
 - Comments:

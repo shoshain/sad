@@ -42,6 +42,7 @@ $root      = Resolve-Path (Join-Path $scriptDir '..\..')
 $state     = Join-Path $root '.sad\state\sad-state.md'
 $const     = Join-Path $root '.sad\memory\constitution.md'
 $specs     = Join-Path $root 'specs'
+. (Join-Path $scriptDir '_sad-approval-lib.ps1')
 
 function Emit {
     param(
@@ -97,6 +98,9 @@ if (Test-Path $state) {
     if ($rawLast  -and $rawLast  -notmatch '^\[.*\]')       { $lastCmd = ($rawLast -split '\s+')[0] }
 }
 
+$featDir = if ($slug) { Join-Path $specs $slug } else { '' }
+$triage  = if ($featDir -and (Test-Path $featDir)) { Get-SadTriageSize $featDir } else { 'bounded' }
+
 # 3. Phase -> next-command lookup, plus gate detection
 switch ($phase) {
     { $_ -in @('none','') } {
@@ -106,10 +110,21 @@ switch ($phase) {
     }
     'setup-needed'        { Emit -Kind 'setup' -Cmd '/sad-setup'             -Slug $slug -Reason 'setup not yet run' -ExitCode 3 }
     'constitution-needed' { Emit -Kind 'setup' -Cmd '/sad-constitution'      -Slug $slug -Reason 'constitution not yet filled' -ExitCode 3 }
-    'brainstorm'          { Emit -Kind 'run'   -Cmd '/sad-specify'           -Slug $slug -Reason 'brainstorm complete' -ExitCode 0 }
-    'specify'             { Emit -Kind 'run'   -Cmd '/sad-clarify'           -Slug $slug -Reason 'spec drafted' -ExitCode 0 }
-    'clarify'             { Emit -Kind 'run'   -Cmd '/sad-impact-forecast'   -Slug $slug -Reason 'spec stable' -ExitCode 0 }
-    'impact-forecast'     { Emit -Kind 'run'   -Cmd '/sad-plan'              -Slug $slug -Reason 'impact forecast written' -ExitCode 0 }
+    'brainstorm'          { Emit -Kind 'run' -Cmd '/sad-specify' -Slug $slug -Reason "brainstorm complete (triage: $triage)" -ExitCode 0 }
+    'specify' {
+        if ($triage -eq 'trivial') {
+            Emit -Kind 'run' -Cmd '/sad-implement' -Slug $slug -Reason 'trivial triage -- skipping clarify/plan/walkthrough' -ExitCode 0
+        }
+        Emit -Kind 'run' -Cmd '/sad-clarify' -Slug $slug -Reason 'spec drafted' -ExitCode 0
+    }
+    'clarify'             { Emit -Kind 'run' -Cmd '/sad-impact-forecast' -Slug $slug -Reason 'spec stable' -ExitCode 0 }
+    'impact-forecast' {
+        if ($triage -eq 'strategic') {
+            Emit -Kind 'run' -Cmd '/sad-context' -Slug $slug -Reason 'strategic triage -- context bundle required before plan' -ExitCode 0
+        }
+        Emit -Kind 'run' -Cmd '/sad-plan' -Slug $slug -Reason 'impact forecast written' -ExitCode 0
+    }
+    'context'             { Emit -Kind 'run' -Cmd '/sad-plan' -Slug $slug -Reason 'context bundle written' -ExitCode 0 }
     'plan'                { Emit -Kind 'run'   -Cmd '/sad-walkthrough'       -Slug $slug -Reason 'plan written' -ExitCode 0 }
     'walkthrough' {
         $featDir = Join-Path $specs $slug
@@ -127,7 +142,12 @@ switch ($phase) {
     'walkthrough-approved' { Emit -Kind 'run' -Cmd '/sad-analyze'   -Slug $slug -Reason 'walkthroughs approved' -ExitCode 0 }
     'analyze'              { Emit -Kind 'run' -Cmd '/sad-tasks'     -Slug $slug -Reason 'analysis complete' -ExitCode 0 }
     'tasks'                { Emit -Kind 'run' -Cmd '/sad-implement' -Slug $slug -Reason 'task list written' -ExitCode 0 }
-    'implement'            { Emit -Kind 'run' -Cmd '/sad-review'    -Slug $slug -Reason 'implementation complete' -ExitCode 0 }
+    'implement' {
+        if ($triage -eq 'trivial') {
+            Emit -Kind 'run' -Cmd '/sad-reconcile' -Slug $slug -Reason 'trivial triage -- skipping reviewer fleet' -ExitCode 0
+        }
+        Emit -Kind 'run' -Cmd '/sad-review' -Slug $slug -Reason 'implementation complete' -ExitCode 0
+    }
     'review'               { Emit -Kind 'run' -Cmd '/sad-reconcile' -Slug $slug -Reason 'reviewer fleet finished' -ExitCode 0 }
     'reconcile'            { Emit -Kind 'gate' -Cmd 'reconcile'     -Slug $slug -Reason 'awaiting semi-technical sign-off on reconciliation verdicts' -ExitCode 2 }
     'reconcile-approved'   { Emit -Kind 'run' -Cmd '/sad-compound'  -Slug $slug -Reason 'reconciliation approved' -ExitCode 0 }

@@ -11,7 +11,7 @@
 
 | ID | Spec / contract ref | Code ref | Description | Proposed verdict | Confidence | Rationale (one line) |
 |----|---------------------|----------|-------------|------------------|------------|----------------------|
-| D1 | feature.spec.md §… | path:line | … | spec-update / code-update / both-update | low/medium/high | … |
+| D1 | feature.spec.md §… | path:line | … | spec-update / code-update / both-update / intent-update / spec-tightening / intent-orphan | low/medium/high | … |
 
 ## Accepted intentional drift
 [List any deltas where spec was updated or code was fixed during reconciliation.]
