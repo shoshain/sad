@@ -19,6 +19,13 @@ behavior they can exercise, not prose they hope someone else interpreted.
 TAO supplies precision oracles; SAD supplies who must approve which artifact.
 Oracles inform `/sad-analyze` and reviewer-fleet reports; they do not replace tier gates.
 
+## SAD + FAAFO
+
+FAAFO finds and validates real problems before any solution exists; SAD specifies and ships
+the solution chosen further downstream. FAAFO sits upstream of AIM, which sits upstream of
+`/sad-brainstorm` — route FAAFO problem dossiers into AIM invention candidates, not directly
+into `feature.spec.md`.
+
 ## SAD + AIM
 
 AIM produces invention candidates; SAD specifies and ships chosen candidates.

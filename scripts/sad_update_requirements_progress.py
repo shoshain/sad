@@ -1,11 +1,16 @@
 """Refresh aggregated requirements compliance progress for SAD-tracked specs.
 
-Parses ``Project_Plan/safety_doc_autodoc_requirements_mapping.md`` (pipe tables),
-merges optional per-feature ``req-coverage.yaml`` and REQ mentions inside
-``feature.spec.md``, and writes ``specs/requirements-compliance-progress.md``.
+Parses a REQ/NREQ mapping markdown file (pipe tables), merges optional
+per-feature ``req-coverage.yaml`` and REQ mentions inside ``feature.spec.md``,
+and writes ``specs/requirements-compliance-progress.md``.
 
-Designed for AISCETA safety-documentation REQ traceability; reusable from any
-repo by passing ``--mapping`` and ``--specs-dir``.
+Generic across repos: pass ``--mapping``, ``--specs-dir``, and
+``--canonical-docx`` for your own project. If omitted, this script falls back
+to the path conventions of its original consuming product, AISCETA
+(``Project_Plan/safety_doc_autodoc_requirements_mapping.md`` and
+``Project_Plan/Generating Safety Documentation - Requirements.docx``) -- these
+are documented examples, not a generic default; pass the flags explicitly in
+any other repo.
 """
 
 from __future__ import annotations
@@ -23,6 +28,15 @@ try:
     import yaml  # type: ignore[import-untyped]
 except ImportError:
     yaml = None  # type: ignore[assignment]
+
+# Example paths from this script's original consuming product (AISCETA).
+# NOT a generic default -- pass --mapping / --canonical-docx explicitly for
+# any other repo. Used only when the corresponding flag is omitted, and a
+# note is printed to stderr when that happens (see main()).
+_AISCETA_EXAMPLE_MAPPING_REL = "Project_Plan/safety_doc_autodoc_requirements_mapping.md"
+_AISCETA_EXAMPLE_CANONICAL_DOCX = (
+    "Project_Plan/Generating Safety Documentation - Requirements.docx"
+)
 
 _REQ_FIRST_CELL = re.compile(
     r"^(?P<id>(?:REQ|NREQ)-DOC-[0-9]+(?:/[0-9]+)*(?:\u2026[0-9]+)?)",
@@ -326,7 +340,9 @@ def main(argv: list[str] | None = None) -> int:
         "--mapping",
         type=Path,
         default=None,
-        help="Path to safety_doc_autodoc_requirements_mapping.md",
+        help="Path to the REQ/NREQ mapping markdown file. No generic default; "
+        f"if omitted, falls back to the AISCETA example path "
+        f"({_AISCETA_EXAMPLE_MAPPING_REL}) with a stderr note.",
     )
     parser.add_argument(
         "--specs-dir",
@@ -350,17 +366,31 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--canonical-docx",
         type=str,
-        default="Project_Plan/Generating Safety Documentation - Requirements.docx",
-        help="Display path for normative DOCX (informational in markdown).",
+        default=None,
+        help="Display path for normative DOCX (informational in markdown only). "
+        "No generic default; if omitted, falls back to the AISCETA example path "
+        f"({_AISCETA_EXAMPLE_CANONICAL_DOCX}) with a stderr note.",
     )
     args = parser.parse_args(argv)
 
     root = args.repo_root.resolve()
-    mapping = (
-        args.mapping.resolve()
-        if args.mapping
-        else root / "Project_Plan/safety_doc_autodoc_requirements_mapping.md"
-    )
+    if args.mapping is not None:
+        mapping = args.mapping.resolve()
+    else:
+        mapping = root / _AISCETA_EXAMPLE_MAPPING_REL
+        sys.stderr.write(
+            "note: --mapping not given; falling back to the documented AISCETA "
+            f"example path ({_AISCETA_EXAMPLE_MAPPING_REL}). Pass --mapping "
+            "explicitly for other repos.\n"
+        )
+    canonical_docx = args.canonical_docx
+    if canonical_docx is None:
+        canonical_docx = _AISCETA_EXAMPLE_CANONICAL_DOCX
+        sys.stderr.write(
+            "note: --canonical-docx not given; falling back to the documented "
+            f"AISCETA example path ({_AISCETA_EXAMPLE_CANONICAL_DOCX}). Pass "
+            "--canonical-docx explicitly for other repos.\n"
+        )
     specs_dir = (
         args.specs_dir.resolve()
         if args.specs_dir
@@ -390,7 +420,7 @@ def main(argv: list[str] | None = None) -> int:
     body = render_progress_markdown(
         mapping_rows=mapping_rows,
         coverage=coverage,
-        canonical_docx=args.canonical_docx,
+        canonical_docx=canonical_docx,
         mapping_rel=mapping_rel,
         generated_uri=generated_uri,
         specs_dir=specs_dir,
@@ -407,7 +437,7 @@ def main(argv: list[str] | None = None) -> int:
     write_registry_snapshot(
         reg_path,
         mapping_rows,
-        canonical_docx=args.canonical_docx,
+        canonical_docx=canonical_docx,
         mapping_rel=mapping_rel,
     )
     print(f"Wrote {output_md}")

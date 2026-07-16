@@ -111,6 +111,30 @@ else
   record "scripts.platform" "yellow" "Only ${SH_COUNT} .sh scripts found; expected at least 4"
 fi
 
+# version consistency: README Status line vs .archangel/methodology.toml
+ARCHANGEL_TOML="${ROOT}/.archangel/methodology.toml"
+README_MD="${ROOT}/README.md"
+if [[ ! -f "${ARCHANGEL_TOML}" ]]; then
+  record "version.consistency" "yellow" ".archangel/methodology.toml missing" "Add the pack manifest with a version key under [pack]"
+elif [[ ! -f "${README_MD}" ]]; then
+  record "version.consistency" "yellow" "README.md missing" "Add a README with a vX.Y marker in the Status section"
+else
+  toml_version=$(grep -m1 -E '^version[[:space:]]*=' "${ARCHANGEL_TOML}" | sed -E 's/^version[[:space:]]*=[[:space:]]*"([^"]*)".*/\1/')
+  readme_version=$(awk '/^## Status/{flag=1; next} /^## /{flag=0} flag' "${README_MD}" | grep -m1 -oE 'v[0-9]+\.[0-9]+(\.[0-9]+)?' | sed 's/^v//')
+  if [[ -z "${toml_version}" ]]; then
+    record "version.consistency" "yellow" "No 'version' key found under [pack] in .archangel/methodology.toml" "Add version = \"X.Y.Z\""
+  elif [[ -z "${readme_version}" ]]; then
+    record "version.consistency" "yellow" "No vX.Y marker found in README.md's Status section" "Add a 'vX.Y' marker to the Status section"
+  else
+    toml_mm=$(printf '%s' "${toml_version}" | cut -d. -f1,2)
+    if [[ "${toml_mm}" == "${readme_version}" ]]; then
+      record "version.consistency" "green" "README (v${readme_version}) matches methodology.toml (${toml_version})"
+    else
+      record "version.consistency" "red" "README Status says v${readme_version} but methodology.toml says ${toml_version}" "Align README's Status line with .archangel/methodology.toml's version"
+    fi
+  fi
+fi
+
 # Extended: spec-theater detector + substrate diagnostic
 if [[ -f "${ROOT}/.sad/scripts/_sad-doctor-extended.sh" ]]; then
   # shellcheck source=_sad-doctor-extended.sh

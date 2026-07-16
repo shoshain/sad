@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(bash .sad/scripts/doctor.sh)",
-      "PowerShell(Get-Command *)",
-      "PowerShell(& 'C:\\\\Program Files\\\\nodejs\\\\node.exe' --experimental-strip-types evals/run.mjs 2>&1 | Select-Object -First 80)"
-    ]
-  }
-}

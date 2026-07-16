@@ -1,6 +1,8 @@
 .DS_Store
 # AppleDouble resource-fork sidecars (non-HFS+ volumes)
 ._*
+# Claude Code — personal local settings overrides (never shared/tracked)
+.claude/settings.local.json
 .env
 .env.*
 *.log
