@@ -164,7 +164,8 @@ apply_adapter() {
           # Adapter ships an explicit override — copy verbatim.
           do_run cp "${adapter_cmd_dir}/${base}" "${dst}"
         else
-          do_run bash -c "cat > '${dst}' <<EOF
+          # Quoted delimiter: the backticks below are Markdown, not command substitution.
+          do_run bash -c "cat > '${dst}' <<'EOF'
 # ${base%.*}
 
 Claude Code slash-command pointer. The canonical prompt lives at \`commands/${base}\` in this repo. Read it and follow its 'Your task' / 'Discipline' sections exactly.

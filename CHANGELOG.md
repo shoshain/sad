@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `hook-tier-gate.{sh,ps1}`: Claude Code hook entry points that read the file path from the hook's JSON input and run `check-tier-approvals` on that feature (`.sad/scripts/hook-tier-gate.sh`, `.sad/scripts/hook-tier-gate.ps1`)
+
+### Fixed
+
+- Claude Code adapter hooks now match Claude Code's settings schema: each matcher holds a `hooks` array, and file filters are `if` rules (`Write(...)` and `Edit(...)`) instead of the unsupported `filePatterns` key. Before this, all four settings variants failed schema validation and the tier gate never ran (`adapters/claude-code/settings*.json`)
+- The tier gate no longer reads the non-existent `CLAUDE_TOOL_INPUT_file_path` variable; it takes the path from the hook's stdin JSON (`adapters/claude-code/settings*.json`)
+- Pre-spec and post-reconcile hooks now reach the assistant through `additionalContext`; their plain stdout only went to the debug log. The persistent pre-spec hook now names the three governing files instead of printing them (`adapters/claude-code/settings*.json`)
+- `scripts/sad-init.sh` uses LF line endings again; with CRLF, bash on macOS and Linux stopped at `set -euo pipefail` and the installer did not run (`scripts/sad-init.sh`)
+- `scripts/sad-init.sh` no longer executes `commands/sad-*.md` as shell scripts while writing Claude Code command pointers. The pointer heredoc was unquoted, so the Markdown backticks around `commands/<name>.md` ran each file relative to the directory the installer was started from, and the pointers were written with an empty path (`scripts/sad-init.sh`)
+- Claude Code adapter README documents the hooks it installs (`adapters/claude-code/README.md`)
+
 ## [0.1.0] - 2026-06-10
 
 ### Added

@@ -24,6 +24,16 @@ Every new conversation starts with the assistant seeing:
 
 That is the contract: an assistant with these four files in its context cannot accidentally forget that this project is SAD-anchored.
 
+## Hooks written into `.claude/settings.json`
+
+All four settings variants use Claude Code's hook shape (`matcher` → `hooks[]` → `{ type, if, command }`) and validate against the schema they declare.
+
+- **Tier gate (blocking).** A `PreToolUse` hook on writes and edits to `specs/<slug>/tasks.md` runs `.sad/scripts/hook-tier-gate.sh` (`hook-tier-gate.ps1` on Windows). It reads `tool_input.file_path` from the hook's JSON input on stdin and runs `check-tier-approvals` on that feature directory. Exit 2 blocks the write, and the missing tiers are shown to the assistant.
+- **Pre-spec and post-reconcile notes.** Writes to `specs/**/feature.spec.md` and `specs/**/reconciliation.md` add a short note to the assistant's context through `additionalContext`. Plain stdout from these events only reaches Claude Code's debug log.
+- **SessionStart** — `--persistent` variants only; see above.
+
+Each file filter appears twice, as `Write(...)` and `Edit(...)`, because a hook `if` rule only matches the tool it names. The tier gate is a client-side check: a developer can switch it off with `"disableAllHooks": true` in their own `.claude/settings.local.json`.
+
 ## Files in this adapter
 
 - [`settings.json`](settings.json) — POSIX settings template; hook commands invoke `.sad/scripts/*.sh`.

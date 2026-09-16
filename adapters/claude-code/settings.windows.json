@@ -23,20 +23,59 @@
     "PreToolUse": [
       {
         "matcher": "Write|Edit",
-        "filePatterns": ["**/feature.spec.md"],
-        "command": "echo 'SAD: pre-spec hook -- load constitution + non-technical stakeholder context before editing feature.spec.md. See hooks/pre-spec.json.'"
-      },
-      {
-        "matcher": "Write|Edit",
-        "filePatterns": ["**/tasks.md"],
-        "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& .sad/scripts/check-tier-approvals.ps1 (Split-Path -Parent $env:CLAUDE_TOOL_INPUT_file_path)\""
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Write(/specs/**/feature.spec.md)",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"SAD pre-spec: feature.spec.md is governed by .sad/memory/constitution.md and is written for the non-technical tier described in .sad/stakeholders/non-technical.md. See hooks/pre-spec.json.\"}}'"
+          },
+          {
+            "type": "command",
+            "if": "Edit(/specs/**/feature.spec.md)",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"SAD pre-spec: feature.spec.md is governed by .sad/memory/constitution.md and is written for the non-technical tier described in .sad/stakeholders/non-technical.md. See hooks/pre-spec.json.\"}}'"
+          },
+          {
+            "type": "command",
+            "if": "Write(/specs/*/tasks.md)",
+            "command": "powershell",
+            "args": [
+              "-NoProfile",
+              "-ExecutionPolicy",
+              "Bypass",
+              "-File",
+              "${CLAUDE_PROJECT_DIR}/.sad/scripts/hook-tier-gate.ps1"
+            ]
+          },
+          {
+            "type": "command",
+            "if": "Edit(/specs/*/tasks.md)",
+            "command": "powershell",
+            "args": [
+              "-NoProfile",
+              "-ExecutionPolicy",
+              "Bypass",
+              "-File",
+              "${CLAUDE_PROJECT_DIR}/.sad/scripts/hook-tier-gate.ps1"
+            ]
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "filePatterns": ["**/reconciliation.md"],
-        "command": "echo 'SAD: post-reconcile hook -- nudge semi-technical reviewer for sign-off and consider running /sad-compound. See hooks/post-reconcile.json.'"
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Write(/specs/**/reconciliation.md)",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"SAD post-reconcile: reconciliation.md changed. It needs semi-technical reviewer sign-off, and /sad-compound is the next lifecycle step. See hooks/post-reconcile.json.\"}}'"
+          },
+          {
+            "type": "command",
+            "if": "Edit(/specs/**/reconciliation.md)",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"SAD post-reconcile: reconciliation.md changed. It needs semi-technical reviewer sign-off, and /sad-compound is the next lifecycle step. See hooks/post-reconcile.json.\"}}'"
+          }
+        ]
       }
     ]
   }
